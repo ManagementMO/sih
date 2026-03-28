@@ -90,7 +90,7 @@ const state = {
     live: false,
     startedAt: 0,
     beatMs: 1000,
-    toleranceMs: 230,
+    toleranceMs: 320,
     clickTimes: [],
     clickErrors: [],
     lastPulseIndex: -1,
@@ -542,7 +542,7 @@ function evaluateTimingTrial() {
   const avgError = average(state.timing.clickErrors);
   const maxError = Math.max(...state.timing.clickErrors);
   const variance = standardDeviation(intervals);
-  const pass = avgError <= state.timing.toleranceMs && maxError <= state.timing.toleranceMs * 1.35 && variance < 260;
+  const pass = avgError <= state.timing.toleranceMs && maxError <= state.timing.toleranceMs * 1.45 && variance < 340;
 
   refs.timingAverage.textContent = `Avg error: ${Math.round(avgError)}ms`;
   refs.timingVariance.textContent = `Variance: ${Math.round(variance)}ms`;
