@@ -162,6 +162,7 @@ const refs = {
   binaryScoreline: document.getElementById("binaryScoreline"),
   binaryButtons: Array.from(document.querySelectorAll(".binary-button")),
   trials: Array.from(document.querySelectorAll(".trial")),
+  ladderRows: Array.from(document.querySelectorAll(".ladder-row")),
   ladderStatuses: {
     line: document.getElementById("status-line"),
     timing: document.getElementById("status-timing"),
@@ -284,6 +285,13 @@ function currentStageKey() {
   return stageOrder[state.currentStageIndex];
 }
 
+function updateLadderSelection() {
+  const activeStage = currentStageKey();
+  refs.ladderRows.forEach((row) => {
+    row.classList.toggle("is-current", row.dataset.stage === activeStage);
+  });
+}
+
 function setStageContent(stageKey) {
   const meta = stageMeta[stageKey];
   refs.stageIndexLabel.textContent = meta.index;
@@ -307,6 +315,7 @@ function activateStage(index) {
       updateStatus(key, key === stageKey ? "live" : "pending");
     }
   });
+  updateLadderSelection();
   setStageContent(stageKey);
   if (stageKey === "line") {
     resetLineTrial();
@@ -1110,6 +1119,15 @@ refs.nextButton.addEventListener("click", () => {
     return;
   }
   activateStage(state.currentStageIndex + 1);
+});
+
+refs.ladderRows.forEach((row) => {
+  row.addEventListener("click", () => {
+    const index = stageOrder.indexOf(row.dataset.stage);
+    if (index === -1) return;
+    activateStage(index);
+    appendLog(`Manual stage jump: ${stageMeta[row.dataset.stage].title}.`);
+  });
 });
 
 refs.lineField.addEventListener("pointermove", (event) => {

@@ -1,38 +1,10 @@
-const EMOJI_MAP = {
-  'Gerald P. Featherton III': '🕊️',
-  'Pecky McPeckface': '🐦',
-  'Sir Reginald Von Coo': '🦅',
-  'Henrietta Wingsworth': '🐧',
-  'Bartholomew Fluffington': '🐤',
-  'Clucksworth B. Feathers': '🦆',
-  'Margaret Peckington': '🐔',
-  'Chad Thunderwing': '🦜',
-  'You (A Pigeon)': '🐦‍⬛',
-  'Dave': '🐣',
-  'Professor Coo-per': '🦉',
-  'Elon Coo-sk': '🦩',
-};
-
-const FALLBACK_EMOJIS = ['🐦', '🕊️', '🐤', '🦆', '🐔'];
-
-function hashName(name) {
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) {
-    hash = ((hash << 5) - hash + name.charCodeAt(i)) | 0;
-  }
-  return Math.abs(hash);
-}
-
-function getEmoji(name) {
-  if (EMOJI_MAP[name]) return EMOJI_MAP[name];
-  return FALLBACK_EMOJIS[hashName(name || 'Pigeon') % FALLBACK_EMOJIS.length];
-}
+import PigeonSVG from './PigeonSVG';
 
 const SIZE_CONFIG = {
-  sm: { wh: 32, emoji: 18, badge: 12, badgeIcon: 8 },
-  md: { wh: 48, emoji: 28, badge: 16, badgeIcon: 10 },
-  lg: { wh: 72, emoji: 40, badge: 20, badgeIcon: 13 },
-  xl: { wh: 128, emoji: 72, badge: 28, badgeIcon: 18 },
+  sm: { wh: 32, badge: 12, badgeIcon: 8 },
+  md: { wh: 48, badge: 16, badgeIcon: 10 },
+  lg: { wh: 72, badge: 20, badgeIcon: 13 },
+  xl: { wh: 128, badge: 28, badgeIcon: 18 },
 };
 
 export default function Avatar({
@@ -44,44 +16,34 @@ export default function Avatar({
   verified = false,
 }) {
   const config = SIZE_CONFIG[size] || SIZE_CONFIG.md;
-  const emoji = getEmoji(name);
-
   const outerPad = 4;
   const outerSize = config.wh + outerPad * 2;
 
   return (
     <div
-      className="relative shrink-0 select-none"
+      className="relative shrink-0 select-none animate-pigeon-bob"
       style={{ width: outerSize, height: outerSize }}
     >
       {/* Open-to-work green dashed ring */}
       {showOpenToWork && (
         <div
           className="absolute inset-0 rounded-full"
-          style={{
-            border: '3px dashed #057642',
-          }}
+          style={{ border: '3px dashed #057642' }}
         />
       )}
 
-      {/* Main circle */}
+      {/* Main circle with SVG pigeon */}
       <div
-        className="rounded-full flex items-center justify-center absolute"
+        className="rounded-full overflow-hidden absolute"
         style={{
           width: config.wh,
           height: config.wh,
-          backgroundColor: color,
+          backgroundColor: color + '22',
           top: outerPad,
           left: outerPad,
         }}
       >
-        <span
-          style={{ fontSize: config.emoji, lineHeight: 1 }}
-          role="img"
-          aria-label={name || 'pigeon'}
-        >
-          {emoji}
-        </span>
+        <PigeonSVG name={name} color={color} />
       </div>
 
       {/* Premium badge */}
