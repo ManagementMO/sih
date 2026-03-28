@@ -7,13 +7,13 @@ A standalone cursed retro productivity app for the Stupid Ideas Hackathon.
 From this folder:
 
 ```bash
-python3 -m http.server 4180
+python3 -m http.server 4181
 ```
 
 Then open:
 
 ```text
-http://localhost:4180
+http://localhost:4181
 ```
 
 ## What it does

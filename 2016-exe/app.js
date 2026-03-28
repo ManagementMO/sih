@@ -330,9 +330,9 @@ function buildLinkedInPost(task, deck, seed) {
 
 function buildDeck(task, trigger = "disrupt") {
   const normalizedTask = normalizeTask(task) || "buy milk";
-  const seedBase = hashString(
-    `${normalizedTask}|${JSON.stringify(state.modifiers)}|${trigger}`
-  );
+  const stateFingerprint = `${normalizedTask}|${JSON.stringify(state.modifiers)}`;
+  const seedBase = hashString(stateFingerprint);
+  const adviceSeed = hashString(`${stateFingerprint}|${trigger}`);
   const corePhrase = buildCorePhrase(normalizedTask, seedBase);
   const modifierWeight =
     state.modifiers.pivot * 4 +
@@ -378,7 +378,7 @@ function buildDeck(task, trigger = "disrupt") {
   const modeBadge = pick(moodModes, seedBase + state.modifiers.grind + state.modifiers.seed);
   const clippyAdvice = pick(
     clippyLines[trigger] || clippyLines.disrupt,
-    seedBase + modifierWeight
+    adviceSeed + modifierWeight
   );
   const clippyMood = state.modifiers.seed > 0 ? "TERM SHEET ENABLER" : "TOXIC MENTOR ONLINE";
   const investorQuote = pick(investorQuotes, seedBase + state.modifiers.seed * 2);
