@@ -2,6 +2,47 @@ import { useState, useRef, useEffect } from 'react';
 import { Search, Pencil, MoreHorizontal, Video, Phone, Smile, Paperclip, Image, Send } from 'lucide-react';
 import Avatar from '../components/Avatar';
 import { conversations } from '../data/messages';
+import { getPigeonById } from '../data/pigeons';
+
+function parseVoiceNote(text) {
+  // Match patterns like:
+  //   [AGGRESSIVE COOING - VOICE NOTE 0:47]
+  //   [VOICE NOTE 2:13 - heavy breathing and wing sounds]
+  const pattern1 = /^\[(.+?)\s*-\s*VOICE NOTE\s+(\d+:\d+)\]$/i;
+  const pattern2 = /^\[VOICE NOTE\s+(\d+:\d+)\s*-\s*(.+?)\]$/i;
+
+  let match = text.match(pattern1);
+  if (match) {
+    return { caption: match[1].toLowerCase(), duration: match[2] };
+  }
+  match = text.match(pattern2);
+  if (match) {
+    return { caption: match[2], duration: match[1] };
+  }
+  // Fallback: check if it loosely contains voice note or aggressive cooing
+  if (/\[VOICE NOTE/i.test(text) || /\[AGGRESSIVE COOING/i.test(text)) {
+    const durMatch = text.match(/(\d+:\d+)/);
+    return { caption: text.replace(/[\[\]]/g, '').trim(), duration: durMatch ? durMatch[1] : '0:47' };
+  }
+  return null;
+}
+
+function VoiceNoteBubble({ caption, duration }) {
+  return (
+    <div>
+      <div className="flex items-center gap-2 px-3 py-2 bg-gray-200 rounded-full">
+        <span className="text-lg">🎤</span>
+        <div className="flex gap-0.5">
+          {[...Array(12)].map((_, i) => (
+            <div key={i} className="w-1 rounded-full bg-li-secondary" style={{ height: `${8 + Math.random() * 16}px` }} />
+          ))}
+        </div>
+        <span className="text-xs text-li-secondary ml-1">{duration}</span>
+      </div>
+      <p className="text-xs italic text-li-secondary mt-1">{caption}</p>
+    </div>
+  );
+}
 
 function Messaging() {
   const [activeId, setActiveId] = useState(conversations[0]?.id || null);
@@ -74,7 +115,9 @@ function Messaging() {
             >
               {/* Avatar */}
               <div className="relative shrink-0">
-                <Avatar name={convo.withName} color={convo.withColor} size="sm" />
+                {(() => { const p = getPigeonById(convo.withId); return (
+                  <Avatar name={convo.withName} color={convo.withColor} size="sm" premium={p?.premium} verified={p?.verified} />
+                ); })()}
                 {convo.unread && (
                   <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-li-blue rounded-full border-2 border-white" />
                 )}
@@ -107,7 +150,9 @@ function Messaging() {
           {/* Chat Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-li-border">
             <div className="flex items-center gap-3 min-w-0">
-              <Avatar name={activeConvo.withName} color={activeConvo.withColor} size="sm" />
+              {(() => { const p = getPigeonById(activeConvo.withId); return (
+                <Avatar name={activeConvo.withName} color={activeConvo.withColor} size="sm" premium={p?.premium} verified={p?.verified} />
+              ); })()}
               <div className="min-w-0">
                 <h3 className="text-[14px] font-semibold text-li-text truncate">{activeConvo.withName}</h3>
                 <p className="text-[12px] text-li-secondary truncate">{activeConvo.withHeadline}</p>
@@ -139,15 +184,31 @@ function Messaging() {
                       </div>
                     )}
                     <div>
-                      <div
-                        className={`px-3 py-2 rounded-xl text-[14px] leading-relaxed ${
-                          isMe
-                            ? 'bg-li-blue text-white rounded-br-sm'
-                            : 'bg-[#f2f2f2] text-li-text rounded-bl-sm'
-                        }`}
-                      >
-                        {msg.text}
-                      </div>
+                      {(() => {
+                        const voiceNote = parseVoiceNote(msg.text);
+                        if (voiceNote) {
+                          return (
+                            <div className={`px-3 py-2 rounded-xl ${
+                              isMe
+                                ? 'bg-li-blue rounded-br-sm'
+                                : 'bg-[#f2f2f2] rounded-bl-sm'
+                            }`}>
+                              <VoiceNoteBubble caption={voiceNote.caption} duration={voiceNote.duration} />
+                            </div>
+                          );
+                        }
+                        return (
+                          <div
+                            className={`px-3 py-2 rounded-xl text-[14px] leading-relaxed ${
+                              isMe
+                                ? 'bg-li-blue text-white rounded-br-sm'
+                                : 'bg-[#f2f2f2] text-li-text rounded-bl-sm'
+                            }`}
+                          >
+                            {msg.text}
+                          </div>
+                        );
+                      })()}
                       <p className={`text-[11px] text-li-secondary mt-1 ${isMe ? 'text-right' : 'text-left'}`}>
                         {msg.time}
                       </p>
@@ -204,6 +265,8 @@ function Messaging() {
               <button
                 onClick={handleSend}
                 disabled={!messageText.trim()}
+                aria-label="Air Drop"
+                title="Air Drop"
                 className={`p-2 rounded-full transition-colors ${
                   messageText.trim()
                     ? 'bg-li-blue text-white hover:bg-li-blue-hover'

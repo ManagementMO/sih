@@ -9,7 +9,7 @@ const stageMeta = {
   timing: {
     index: "Trial 02",
     title: "Clock Obedience",
-    lead: "Tap the compliance node four times on the pulse. Jazz timing is classified as human behavior.",
+    lead: "Tap the compliance node on four bright beats. The pulse is live immediately, which is terrible news for humans.",
   },
   freeze: {
     index: "Trial 03",
@@ -82,7 +82,11 @@ const state = {
   },
   timing: {
     live: false,
+    startedAt: 0,
+    beatMs: 1000,
+    toleranceMs: 230,
     clickTimes: [],
+    clickErrors: [],
     lastPulseIndex: -1,
     passed: false,
   },
@@ -501,13 +505,15 @@ function setBinaryButtonsDisabled(disabled) {
 }
 
 function resetTimingTrial() {
-  state.timing.live = false;
+  state.timing.live = true;
+  state.timing.startedAt = now();
   state.timing.clickTimes = [];
+  state.timing.clickErrors = [];
   state.timing.lastPulseIndex = -1;
-  refs.pulseOrbit.classList.remove("is-live");
+  refs.pulseOrbit.classList.add("is-live");
   refs.pulseOrbit.style.background =
     "conic-gradient(from -90deg, var(--accent) 0deg, rgba(213, 255, 63, 0.12) 0deg 360deg), radial-gradient(circle at center, rgba(213, 255, 63, 0.1), transparent 58%)";
-  refs.timingHint.textContent = "Tap the node 4 times on the pulse. Swing rhythm is treason.";
+  refs.timingHint.textContent = "Pulse live. Hit four bright beats. Swing rhythm is treason.";
   refs.timingAverage.textContent = "Avg error: --";
   refs.timingVariance.textContent = "Variance: --";
   renderTapStrip([]);
@@ -518,20 +524,19 @@ function evaluateTimingTrial() {
   for (let index = 1; index < state.timing.clickTimes.length; index += 1) {
     intervals.push(state.timing.clickTimes[index] - state.timing.clickTimes[index - 1]);
   }
-  const errors = intervals.map((value) => Math.abs(value - 1000));
-  const avgError = average(errors);
+  const avgError = average(state.timing.clickErrors);
+  const maxError = Math.max(...state.timing.clickErrors);
   const variance = standardDeviation(intervals);
-  const pass = avgError < 240 && variance < 200;
+  const pass = avgError <= state.timing.toleranceMs && maxError <= state.timing.toleranceMs * 1.35 && variance < 260;
 
   refs.timingAverage.textContent = `Avg error: ${Math.round(avgError)}ms`;
   refs.timingVariance.textContent = `Variance: ${Math.round(variance)}ms`;
   updateMetric("timing", `${Math.round(avgError)}ms avg error`);
   renderTapStrip(
-    intervals.map((value) => {
-      const error = Math.round(Math.abs(value - 1000));
+    state.timing.clickErrors.map((error) => {
       return {
-        label: `${value.toFixed(0)}ms`,
-        good: error < 240,
+        label: `${Math.round(error)}ms off`,
+        good: error <= state.timing.toleranceMs,
       };
     }),
   );
@@ -547,7 +552,7 @@ function evaluateTimingTrial() {
   } else {
     setSuspicion(state.suspicion + 6);
     appendLog(`Clock obedience failed at ${Math.round(avgError)}ms average error.`);
-    refs.timingHint.textContent = "Rhythm too alive. Reset and remove the funk from your fingertips.";
+    refs.timingHint.textContent = "Beat window missed. Let the pulse loop once, then click on the bright beats.";
     failStage("Timing drift detected. You tapped like someone who enjoys music.");
   }
 }
@@ -1028,22 +1033,22 @@ function resetEverything() {
 function tick(timestamp = now()) {
   refs.sessionClock.textContent = formatSeconds(timestamp - state.bootedAt);
 
-  if (currentStageKey() === "timing" && state.timing.live) {
-    const elapsed = timestamp - state.timing.clickTimes[0];
-    const phase = clamp((elapsed % 1000) / 1000, 0, 1);
+  if (currentStageKey() === "timing") {
+    const elapsed = timestamp - state.timing.startedAt;
+    const phase = clamp((((elapsed % state.timing.beatMs) + state.timing.beatMs) % state.timing.beatMs) / state.timing.beatMs, 0, 1);
     const arc = Math.max(12, phase * 360);
     refs.pulseOrbit.style.background = `conic-gradient(from -90deg, var(--accent) 0deg ${arc}deg, rgba(213, 255, 63, 0.12) ${arc}deg 360deg), radial-gradient(circle at center, rgba(213, 255, 63, 0.1), transparent 58%)`;
-    const pulseIndex = Math.floor(elapsed / 1000);
-    if (pulseIndex !== state.timing.lastPulseIndex) {
+    const pulseIndex = Math.floor(elapsed / state.timing.beatMs);
+    if (state.timing.live && pulseIndex !== state.timing.lastPulseIndex) {
       state.timing.lastPulseIndex = pulseIndex;
       playTone(520, 0.03, "sine", 0.012);
     }
 
-    if (state.timing.clickTimes.length && timestamp - state.timing.clickTimes.at(-1) > 2600) {
+    if (state.timing.live && state.timing.clickTimes.length && timestamp - state.timing.clickTimes.at(-1) > 2600) {
       resetTimingTrial();
       refs.stageChip.textContent = "Verification in progress";
       refs.resultText.textContent = "Pulse lost. The node re-armed itself automatically.";
-      refs.timingHint.textContent = "Timing window expired. Tap SYNC to begin again.";
+      refs.timingHint.textContent = "Timing window expired. The pulse loop restarted itself.";
       appendLog("Clock obedience auto-reset after a missed beat.");
     }
   }
@@ -1167,26 +1172,26 @@ refs.lineField.addEventListener("pointercancel", () => {
 
 refs.timingButton.addEventListener("click", () => {
   if (currentStageKey() !== "timing") return;
+  if (!state.timing.live) return;
   const timestamp = now();
   state.lastInputAt = timestamp;
   playTone(720, 0.05, "square", 0.016);
-
-  if (!state.timing.live) {
-    state.timing.live = true;
-    state.timing.clickTimes = [timestamp];
-    state.timing.lastPulseIndex = -1;
-    refs.pulseOrbit.classList.add("is-live");
-    refs.timingHint.textContent = "Metronome armed. Three more taps. Eliminate groove.";
-    renderTapStrip([{ label: "ARMED", good: true }]);
-    refs.stageChip.textContent = "Clock obedience active";
-    return;
-  }
-
+  const elapsed = timestamp - state.timing.startedAt;
+  const phase = ((elapsed % state.timing.beatMs) + state.timing.beatMs) % state.timing.beatMs;
+  const error = Math.min(phase, state.timing.beatMs - phase);
   state.timing.clickTimes.push(timestamp);
+  state.timing.clickErrors.push(error);
   if (state.timing.clickTimes.length === 4) {
     evaluateTimingTrial();
   } else {
-    refs.timingHint.textContent = `${4 - state.timing.clickTimes.length} taps remaining. Keep it cold.`;
+    refs.stageChip.textContent = "Clock obedience active";
+    refs.timingHint.textContent = `${4 - state.timing.clickTimes.length} taps remaining. Hit the bright beats.`;
+    renderTapStrip(
+      state.timing.clickErrors.map((value) => ({
+        label: `${Math.round(value)}ms off`,
+        good: value <= state.timing.toleranceMs,
+      })),
+    );
   }
 });
 

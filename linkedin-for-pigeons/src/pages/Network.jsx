@@ -8,7 +8,7 @@ import {
   X,
   Bird,
 } from 'lucide-react';
-import { pigeons } from '../data/pigeons';
+import { pigeons, getPigeonById } from '../data/pigeons';
 import Avatar from '../components/Avatar';
 
 const extraPigeons = [
@@ -75,6 +75,7 @@ const bannerGradients = [
 function Network() {
   const [dismissed, setDismissed] = useState({});
   const [connected, setConnected] = useState({});
+  const [toast, setToast] = useState(null);
 
   const visibleSuggestions = allSuggestions.filter((p) => !dismissed[p.id]);
 
@@ -88,8 +89,18 @@ function Network() {
     setConnected((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
+  const showToast = (name) => {
+    setToast(`You are now connected with ${name}. They are now watching you.`);
+    setTimeout(() => setToast(null), 3000);
+  };
+
   return (
-    <div className="max-w-[1128px] mx-auto py-6 px-4 flex gap-6">
+    <div className="max-w-[1128px] mx-auto py-6 px-4 flex gap-6 relative">
+      {toast && (
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-li-card border border-li-border shadow-lg rounded-lg px-4 py-3 text-sm text-li-text max-w-md">
+          {toast}
+        </div>
+      )}
       {/* LEFT SIDEBAR */}
       <aside className="w-72 shrink-0 hidden lg:block">
         <div className="bg-li-card rounded-lg border border-li-border overflow-hidden">
@@ -147,18 +158,23 @@ function Network() {
               headline="Head of Breadcrumb Acquisitions at CooTech Solutions"
               color="#0a66c2"
               time="3 days ago"
+              pigeon={getPigeonById('1')}
+              onAccept={showToast}
             />
             <InvitationRow
               name="Professor Coo-per"
               headline="Tenured Professor of Urban Foraging at Pigeon University"
               color="#7c3aed"
               time="1 week ago"
+              onAccept={showToast}
             />
             <InvitationRow
               name="Chad Thunderwing"
               headline="Fitness Influencer | 200+ flights/day"
               color="#ef4444"
               time="2 weeks ago"
+              pigeon={getPigeonById('8')}
+              onAccept={showToast}
             />
           </div>
         </div>
@@ -200,12 +216,17 @@ function Network() {
   );
 }
 
-function InvitationRow({ name, headline, color, time }) {
+function InvitationRow({ name, headline, color, time, pigeon, onAccept }) {
   const [responded, setResponded] = useState(null);
+
+  const handleAccept = () => {
+    setResponded('accepted');
+    if (onAccept) onAccept(name);
+  };
 
   return (
     <div className="flex items-center gap-3 px-4 py-3">
-      <Avatar name={name} color={color} size="md" />
+      <Avatar name={name} color={color} size="md" premium={pigeon?.premium} verified={pigeon?.verified} showOpenToWork={pigeon?.openToWork} />
       <div className="flex-1 min-w-0">
         <p className="text-sm font-semibold text-li-text truncate">{name}</p>
         <p className="text-xs text-li-secondary truncate">{headline}</p>
@@ -220,7 +241,7 @@ function InvitationRow({ name, headline, color, time }) {
             Ignore
           </button>
           <button
-            onClick={() => setResponded('accepted')}
+            onClick={handleAccept}
             className="px-4 py-1.5 text-sm font-semibold text-li-blue rounded-full border border-li-blue hover:bg-li-blue-light transition-colors"
           >
             Accept
@@ -256,7 +277,7 @@ function SuggestionCard({ pigeon, gradient, isConnected, onDismiss, onConnect })
       {/* Avatar overlapping banner */}
       <div className="flex justify-center -mt-8 relative z-[1]">
         <div className="ring-3 ring-white rounded-full">
-          <Avatar name={pigeon.name} color={pigeon.color} size="lg" />
+          <Avatar name={pigeon.name} color={pigeon.color} size="lg" premium={pigeon.premium} verified={pigeon.verified} showOpenToWork={pigeon.openToWork} />
         </div>
       </div>
 

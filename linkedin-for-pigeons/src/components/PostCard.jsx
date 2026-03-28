@@ -1,16 +1,79 @@
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ThumbsUp, MessageCircle, Repeat2, Send, Globe, MoreHorizontal } from 'lucide-react';
+import { ThumbsUp, MessageCircle, Repeat2, Send, Globe, MoreHorizontal, Info } from 'lucide-react';
 import Avatar from './Avatar';
+
+const REACTIONS = [
+  { emoji: '👍', label: 'Like' },
+  { emoji: '🐦', label: 'Coo' },
+  { emoji: '🥖', label: 'Breadcrumb' },
+  { emoji: '💩', label: 'Statue' },
+  { emoji: '❤️', label: 'Love' },
+  { emoji: '😂', label: 'LOL' },
+];
 
 export default function PostCard({ post }) {
   const [showComments, setShowComments] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [showReactions, setShowReactions] = useState(false);
+  const [reaction, setReaction] = useState(null);
+
+  const hoverTimerRef = useRef(null);
+  const leaveTimerRef = useRef(null);
 
   const likeCount = liked ? post.likes + 1 : post.likes;
 
+  const handleLikeAreaEnter = useCallback(() => {
+    clearTimeout(leaveTimerRef.current);
+    hoverTimerRef.current = setTimeout(() => {
+      setShowReactions(true);
+    }, 500);
+  }, []);
+
+  const handleLikeAreaLeave = useCallback(() => {
+    clearTimeout(hoverTimerRef.current);
+    leaveTimerRef.current = setTimeout(() => {
+      setShowReactions(false);
+    }, 300);
+  }, []);
+
+  const handlePickerEnter = useCallback(() => {
+    clearTimeout(leaveTimerRef.current);
+    clearTimeout(hoverTimerRef.current);
+  }, []);
+
+  const handlePickerLeave = useCallback(() => {
+    leaveTimerRef.current = setTimeout(() => {
+      setShowReactions(false);
+    }, 300);
+  }, []);
+
+  const handleReactionClick = (r) => {
+    setReaction(r);
+    setLiked(true);
+    setShowReactions(false);
+  };
+
+  const handleLikeClick = () => {
+    if (liked) {
+      setLiked(false);
+      setReaction(null);
+    } else {
+      setLiked(true);
+      if (!reaction) setReaction(REACTIONS[0]);
+    }
+  };
+
   return (
     <div className="bg-li-card rounded-lg border border-li-border shadow-sm">
+      {/* Promoted label */}
+      {post.sponsored && (
+        <div className="flex items-center gap-1 px-4 pt-2 text-xs text-li-secondary">
+          <span>Promoted</span>
+          <Info size={12} className="text-li-secondary" />
+        </div>
+      )}
+
       {/* Author row */}
       <div className="flex items-start gap-2 p-4 pb-0">
         <Link to={`/profile/${post.authorId}`}>
@@ -65,19 +128,59 @@ export default function PostCard({ post }) {
 
       {/* Action buttons */}
       <div className="flex items-center justify-around px-2 py-1">
-        <ActionButton
-          icon={<ThumbsUp size={20} />}
-          label="Like"
-          active={liked}
-          onClick={() => setLiked(!liked)}
-        />
+        {/* Like button with reaction picker */}
+        <div
+          className="relative"
+          onMouseEnter={handleLikeAreaEnter}
+          onMouseLeave={handleLikeAreaLeave}
+        >
+          {/* Reaction picker popup */}
+          {showReactions && (
+            <div
+              className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-white rounded-full px-2 py-1 shadow-lg border border-gray-200 flex items-center gap-1 z-50"
+              onMouseEnter={handlePickerEnter}
+              onMouseLeave={handlePickerLeave}
+            >
+              {REACTIONS.map((r) => (
+                <button
+                  key={r.label}
+                  onClick={() => handleReactionClick(r)}
+                  className="relative group transition-transform duration-150 hover:scale-125 cursor-pointer"
+                  style={{ fontSize: 28, lineHeight: 1, padding: '2px' }}
+                  title={r.label}
+                >
+                  <span className="block hover:text-[36px] transition-all duration-150">
+                    {r.emoji}
+                  </span>
+                  <span className="absolute -top-7 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-[10px] px-1.5 py-0.5 rounded whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                    {r.label}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          <ActionButton
+            icon={
+              reaction ? (
+                <span style={{ fontSize: 20, lineHeight: 1 }}>{reaction.emoji}</span>
+              ) : (
+                <ThumbsUp size={20} />
+              )
+            }
+            label={reaction ? reaction.label : 'Like'}
+            active={liked}
+            onClick={handleLikeClick}
+          />
+        </div>
+
         <ActionButton
           icon={<MessageCircle size={20} />}
-          label="Comment"
+          label="Coo"
           onClick={() => setShowComments(!showComments)}
         />
-        <ActionButton icon={<Repeat2 size={20} />} label="Repost" />
-        <ActionButton icon={<Send size={20} />} label="Send" />
+        <ActionButton icon={<Repeat2 size={20} />} label="Re-coo" />
+        <ActionButton icon={<Send size={20} />} label="Air Drop" />
       </div>
 
       {/* Comments section */}

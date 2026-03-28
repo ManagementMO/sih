@@ -19,6 +19,14 @@ export default function Feed() {
 
         {/* ─── MAIN FEED ─── */}
         <main className="flex-1 max-w-[555px] space-y-2">
+          <div className="bg-li-card rounded-lg border border-li-border shadow-sm p-4 flex items-center gap-3">
+            <span className="text-2xl">📊</span>
+            <div className="flex-1">
+              <p className="text-sm font-semibold text-li-text">Your profile is being viewed by 47 pigeons</p>
+              <p className="text-xs text-li-secondary">Complete your profile to get 2x more breadcrumb opportunities</p>
+            </div>
+            <button className="px-3 py-1.5 bg-li-blue text-white text-xs font-semibold rounded-full hover:bg-li-blue-hover">Complete Profile</button>
+          </div>
           <CreatePost />
           <div className="border-t border-li-border my-1" />
           <div className="space-y-2">
@@ -31,7 +39,12 @@ export default function Feed() {
         {/* ─── RIGHT SIDEBAR ─── */}
         <aside className="w-72 shrink-0 hidden lg:block space-y-2">
           <NewsCard />
+          <LearningCard />
           <WhoToFollow pigeons={suggestedPigeons} />
+          <div className="text-center text-xs text-li-secondary pt-4 space-y-1">
+            <p className="font-semibold">PigeonIn Corporation © 2026</p>
+            <p>About · Privacy Policy (We watch everything) · Terms of Perching · Accessibility (All ledges welcome)</p>
+          </div>
         </aside>
       </div>
     </div>
@@ -54,7 +67,7 @@ function LeftSidebar() {
         {/* Avatar overlapping */}
         <div className="flex justify-center -mt-7">
           <Link to="/profile/me" className="border-2 border-white rounded-full">
-            <Avatar name={currentUser.name} color="#0a66c2" size="lg" />
+            <Avatar name={currentUser.name} color="#0a66c2" size="lg" showOpenToWork={currentUser.openToWork} />
           </Link>
         </div>
         <div className="text-center px-3 pt-2 pb-3">
@@ -148,6 +161,31 @@ function NewsCard() {
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RIGHT SIDEBAR – PIGEON LEARNING
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function LearningCard() {
+  const courses = [
+    { title: 'Breadcrumb Acquisition 101', rating: '4.8', enrolled: '12,847' },
+    { title: 'Advanced Statue Techniques', rating: '4.6', enrolled: '3,201' },
+    { title: 'Cooing for Executives', rating: '4.9', enrolled: '8,445' },
+    { title: 'Python for Pigeons (NOT the predator)', rating: '4.7', enrolled: '5,672' },
+  ];
+  return (
+    <div className="bg-li-card rounded-lg border border-li-border shadow-sm p-3">
+      <h3 className="font-semibold text-sm text-li-text mb-2">PigeonIn Learning</h3>
+      <ul className="space-y-2.5">
+        {courses.map((c, i) => (
+          <li key={i}>
+            <a href="#" className="text-xs font-semibold text-li-text hover:text-li-blue hover:underline block">{c.title}</a>
+            <span className="text-xs text-li-secondary">⭐ {c.rating} · {c.enrolled} enrolled</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    RIGHT SIDEBAR – WHO TO FOLLOW
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 function WhoToFollow({ pigeons }) {
@@ -158,7 +196,7 @@ function WhoToFollow({ pigeons }) {
         {pigeons.map((pigeon) => (
           <div key={pigeon.id} className="flex items-start gap-2">
             <Link to={`/profile/${pigeon.id}`}>
-              <Avatar name={pigeon.name} color={pigeon.color} size="md" />
+              <Avatar name={pigeon.name} color={pigeon.color} size="md" premium={pigeon.premium} verified={pigeon.verified} />
             </Link>
             <div className="flex-1 min-w-0">
               <Link to={`/profile/${pigeon.id}`} className="text-xs font-semibold text-li-text hover:underline hover:text-li-blue block truncate">

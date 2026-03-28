@@ -35,3 +35,31 @@ button { cursor: pointer; font-family: inherit; }
 
 ::-webkit-scrollbar { width: 8px; }
 ::-webkit-scrollbar-thumb { background-color: #bbb; border-radius: 4px; }
+
+@keyframes pigeon-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes fly-across {
+  0% { transform: translateX(-100vw) translateY(0) rotate(0deg); opacity: 1; }
+  50% { transform: translateX(0vw) translateY(-50px) rotate(5deg); opacity: 1; }
+  100% { transform: translateX(100vw) translateY(0) rotate(10deg); opacity: 0; }
+}
+
+.animate-pigeon-bob:hover {
+  animation: pigeon-bob 0.6s ease-in-out infinite;
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+.animate-fly-across {
+  animation: fly-across 3s ease-in-out forwards;
+}

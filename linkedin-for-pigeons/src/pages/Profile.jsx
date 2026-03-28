@@ -39,13 +39,21 @@ export default function Profile() {
         {/* Avatar overlapping banner */}
         <div className="relative px-6">
           <div className="-mt-16 border-4 border-white rounded-full inline-block">
-            <Avatar name={pigeon.name} color={color} size="xl" />
+            <Avatar name={pigeon.name} color={color} size="xl" showOpenToWork={pigeon.openToWork} premium={pigeon.premium} verified={pigeon.verified} />
           </div>
         </div>
 
         {/* Info */}
         <div className="px-6 pt-3 pb-5">
-          <h1 className="text-2xl font-bold text-li-text">{pigeon.name}</h1>
+          <h1 className="text-2xl font-bold text-li-text">
+            {pigeon.name}
+            {pigeon.premium && (
+              <span className="ml-2 inline-flex items-center gap-0.5 px-2 py-0.5 rounded-sm bg-amber-100 text-amber-700 border border-amber-300 text-xs font-semibold">Premium</span>
+            )}
+            {pigeon.verified && (
+              <span className="ml-1 inline-flex items-center justify-center w-5 h-5 rounded-full bg-li-blue text-white text-xs">✓</span>
+            )}
+          </h1>
           <p className="text-sm text-li-text mt-0.5">{pigeon.headline}</p>
 
           <div className="flex items-center gap-3 mt-2 text-xs text-li-secondary">
@@ -56,6 +64,10 @@ export default function Profile() {
               <LinkIcon size={14} /> Contact info
             </button>
           </div>
+
+          {pigeon.status && (
+            <p className="text-xs text-li-green mt-1 flex items-center gap-1">📍 {pigeon.status}</p>
+          )}
 
           <div className="flex items-center gap-2 mt-2 text-xs">
             <Link to="#" className="text-li-blue font-semibold hover:underline">
@@ -72,6 +84,18 @@ export default function Profile() {
               Open to Coo
             </span>
           </div>
+
+          {isMe && (
+            <div className="mt-4 p-4 bg-li-blue-light rounded-lg border border-li-blue/20">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-semibold text-li-text">Your profile is 67% complete</span>
+              </div>
+              <div className="w-full bg-white rounded-full h-2 mb-2">
+                <div className="h-2 rounded-full bg-li-blue" style={{ width: '67%' }} />
+              </div>
+              <p className="text-xs text-li-secondary">Suggestions: Add a professional headshot (you're a pigeon, we know) · Add a featured nest · Get endorsed for Head Bobbing</p>
+            </div>
+          )}
 
           {/* Action buttons */}
           <div className="flex items-center gap-2 mt-4">
@@ -170,6 +194,20 @@ export default function Profile() {
         </div>
       )}
 
+      {/* ─── ACHIEVEMENTS ─── */}
+      {pigeon.badges && pigeon.badges.length > 0 && (
+        <div className="bg-li-card rounded-lg border border-li-border shadow-sm p-6">
+          <h2 className="text-lg font-bold text-li-text mb-4">Achievements</h2>
+          <div className="flex flex-wrap gap-2">
+            {pigeon.badges.map((badge, i) => (
+              <span key={i} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-50 border border-amber-200 rounded-full text-xs font-semibold text-amber-800">
+                🏆 {badge}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* ─── PIGEONS ALSO VIEWED ─── */}
       <div className="bg-li-card rounded-lg border border-li-border shadow-sm p-6">
         <h2 className="text-lg font-bold text-li-text mb-4">Pigeons also viewed</h2>
@@ -182,7 +220,7 @@ export default function Profile() {
               />
               <div className="flex flex-col items-center -mt-6 pb-4 px-3">
                 <Link to={`/profile/${p.id}`} className="border-2 border-white rounded-full">
-                  <Avatar name={p.name} color={p.color} size="lg" />
+                  <Avatar name={p.name} color={p.color} size="lg" showOpenToWork={p.openToWork} premium={p.premium} verified={p.verified} />
                 </Link>
                 <Link
                   to={`/profile/${p.id}`}
@@ -203,6 +241,11 @@ export default function Profile() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* ─── FOOTER ─── */}
+      <div className="text-center text-xs text-li-secondary py-6">
+        PigeonIn Corporation © 2026. All rights reserved. Pigeons are not real (allegedly).
       </div>
     </div>
   );
