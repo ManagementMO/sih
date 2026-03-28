@@ -1,0 +1,14 @@
+Original prompt: Please do the prove you're a robot one (do it in its own folder please in this directory) fully make it great and amazing (use a frontend design skill to help you that you find please to make it great and hilarious)
+
+- Installed and manually used these skills before building: `frontend-skill`, `develop-web-game`, `speech`, `playwright`, `screenshot`.
+- Chosen implementation path: standalone static app in `prove-youre-a-robot/` so nothing depends on package installation.
+- Visual thesis: paranoid government kiosk meets fashion-poster anti-CAPTCHA.
+- Interaction thesis: one-screen audit flow with strong motion, punchy copy, and four absurd trials.
+- Current implementation includes:
+  - boot poster intro
+  - straight-line drag trial with deviation scoring
+  - timing trial with pulse visualization
+  - webcam stillness scan with fallback idle mode
+  - binary question audit
+  - final downloadable certificate
+- Remaining work after initial scaffold: run local verification, fix any UI/logic issues, and polish demo rough edges.

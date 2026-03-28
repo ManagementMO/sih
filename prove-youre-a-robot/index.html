@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prove You're a Robot</title>
+    <meta
+      name="description"
+      content="A deeply suspicious anti-CAPTCHA that rewards straight lines, perfect timing, stillness, and machine-approved opinions."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="ambient-noise" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <div class="boot-overlay" id="bootOverlay">
+      <div class="boot-copy">
+        <p class="eyebrow">Machine Citizenship Bureau // Human Deterrence Division</p>
+        <h1>PROVE YOU'RE A ROBOT</h1>
+        <p class="boot-summary">
+          A reverse CAPTCHA for entities with flawless timing, zero feelings, and a clinically
+          straight cursor.
+        </p>
+        <div class="boot-actions">
+          <button class="primary-btn" id="startButton">Initiate Verification</button>
+          <p class="microcopy">Best experienced on localhost with a webcam. Human excuses will be logged.</p>
+        </div>
+      </div>
+      <div class="boot-detail">
+        <div class="detail-block">
+          <span>TRIALS</span>
+          <strong>04</strong>
+        </div>
+        <div class="detail-block">
+          <span>TARGET</span>
+          <strong>Machine-grade compliance</strong>
+        </div>
+        <div class="detail-block">
+          <span>DISQUALIFYING TRAITS</span>
+          <strong>Creativity, warmth, jazz timing</strong>
+        </div>
+      </div>
+    </div>
+
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="topbar-brand">
+          <p class="eyebrow">Session 17-B</p>
+          <h2>Proof of Roboticity</h2>
+        </div>
+        <div class="topbar-meta">
+          <div class="status-cluster">
+            <span class="status-label">Human suspicion</span>
+            <div class="suspicion-meter" aria-label="Human suspicion meter">
+              <div class="suspicion-fill" id="suspicionFill"></div>
+            </div>
+            <strong id="suspicionValue">84%</strong>
+          </div>
+          <div class="status-cluster compact">
+            <span class="status-label">Boot runtime</span>
+            <strong id="sessionClock">00:00</strong>
+          </div>
+        </div>
+      </header>
+
+      <section class="workspace">
+        <section class="stage-panel">
+          <div class="stage-head">
+            <div>
+              <p class="eyebrow" id="stageIndexLabel">Trial 01</p>
+              <h3 id="stageTitle">Straight-Line Compliance</h3>
+            </div>
+            <div class="stage-head-actions">
+              <span class="stage-chip" id="stageChip">Awaiting verification</span>
+              <button class="ghost-btn" id="retryStageButton">Reset trial</button>
+            </div>
+          </div>
+
+          <div class="stage-description">
+            <p id="stageLead">
+              Drag from ORIGIN to DESTINATION in one insultingly straight motion. Wobble implies
+              imagination.
+            </p>
+          </div>
+
+          <div class="stage-surface">
+            <section class="trial is-active" data-trial="line">
+              <div class="line-trial">
+                <div class="line-field" id="lineField" aria-label="Straight line test surface">
+                  <canvas id="lineCanvas"></canvas>
+                  <div class="line-guide"></div>
+                  <div class="line-node start" id="lineStartNode">
+                    <span>ORIGIN</span>
+                  </div>
+                  <div class="line-node end" id="lineEndNode">
+                    <span>DESTINATION</span>
+                  </div>
+                  <div class="crosshair" id="lineCrosshair" aria-hidden="true"></div>
+                </div>
+                <div class="trial-footnote">
+                  <span id="lineHint">Press on ORIGIN and drag to DESTINATION.</span>
+                  <strong id="lineScore">Deviation: --</strong>
+                </div>
+              </div>
+            </section>
+
+            <section class="trial" data-trial="timing">
+              <div class="timing-trial">
+                <div class="pulse-orbit" id="pulseOrbit">
+                  <div class="pulse-ring"></div>
+                  <button class="timing-button" id="timingButton">SYNC</button>
+                </div>
+                <div class="timing-ledger">
+                  <p id="timingHint">Tap the node 4 times on the pulse. Swing rhythm is treason.</p>
+                  <div class="tap-strip" id="tapStrip" aria-live="polite"></div>
+                  <div class="timing-stats">
+                    <strong id="timingAverage">Avg error: --</strong>
+                    <strong id="timingVariance">Variance: --</strong>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="trial" data-trial="freeze">
+              <div class="freeze-trial">
+                <div class="video-shell">
+                  <video id="cameraFeed" autoplay muted playsinline></video>
+                  <canvas id="freezeCanvas" width="80" height="60" hidden></canvas>
+                  <div class="video-mask"></div>
+                  <div class="video-readout">
+                    <span id="freezeMode">Surveillance offline</span>
+                    <strong id="freezeCountdown">Stable for 0.0 / 3.2s</strong>
+                  </div>
+                </div>
+                <div class="freeze-controls">
+                  <div class="freeze-actions">
+                    <button class="primary-btn" id="enableCameraButton">Enable surveillance</button>
+                    <button class="ghost-btn" id="startFreezeButton" disabled>Commence stillness audit</button>
+                  </div>
+                  <p id="freezeHint">
+                    Webcam preferred. If access fails, the bureau will infer stillness through total
+                    input silence.
+                  </p>
+                  <div class="motion-meter">
+                    <div class="motion-fill" id="motionFill"></div>
+                  </div>
+                  <strong id="motionReading">Motion noise: --</strong>
+                </div>
+              </div>
+            </section>
+
+            <section class="trial" data-trial="binary">
+              <div class="binary-trial">
+                <div class="binary-head">
+                  <p class="eyebrow">Emotional checksum</p>
+                  <strong id="binaryCounter">Question 1 / 5</strong>
+                </div>
+                <h4 id="binaryQuestion">Would you pause a software update because someone is "using the laptop"?</h4>
+                <p class="binary-subtext" id="binarySubtext">Answer in pure binary. Context will be discarded.</p>
+                <div class="binary-actions">
+                  <button class="binary-button zero" data-answer="0">0</button>
+                  <button class="binary-button one" data-answer="1">1</button>
+                </div>
+                <div class="binary-history" id="binaryHistory"></div>
+                <strong id="binaryScoreline">Machine affinity: --</strong>
+              </div>
+            </section>
+          </div>
+
+          <div class="stage-footer">
+            <p class="result-text" id="resultText">System idle. Your warmth level is currently unverified.</p>
+            <button class="primary-btn" id="nextButton" disabled>Advance to next audit</button>
+          </div>
+        </section>
+
+        <aside class="intel-rail">
+          <div class="rail-section">
+            <p class="eyebrow">Audit ladder</p>
+            <div class="trial-ladder" id="trialLadder">
+              <div class="ladder-row">
+                <span>01</span>
+                <strong>Straight line</strong>
+                <em id="status-line">Pending</em>
+              </div>
+              <div class="ladder-row">
+                <span>02</span>
+                <strong>Clock obedience</strong>
+                <em id="status-timing">Pending</em>
+              </div>
+              <div class="ladder-row">
+                <span>03</span>
+                <strong>Stillness scan</strong>
+                <em id="status-freeze">Pending</em>
+              </div>
+              <div class="ladder-row">
+                <span>04</span>
+                <strong>Binary personality</strong>
+                <em id="status-binary">Pending</em>
+              </div>
+            </div>
+          </div>
+
+          <div class="rail-section">
+            <p class="eyebrow">Telemetry</p>
+            <dl class="metric-stack">
+              <div class="metric-row">
+                <dt>Cursor deviation</dt>
+                <dd id="metric-line">--</dd>
+              </div>
+              <div class="metric-row">
+                <dt>Clock obedience</dt>
+                <dd id="metric-timing">--</dd>
+              </div>
+              <div class="metric-row">
+                <dt>Motion noise</dt>
+                <dd id="metric-freeze">--</dd>
+              </div>
+              <div class="metric-row">
+                <dt>Binary affinity</dt>
+                <dd id="metric-binary">--</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="rail-section log-section">
+            <p class="eyebrow">Incident log</p>
+            <ul class="event-log" id="eventLog"></ul>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <div class="certificate-overlay" id="certificateOverlay" hidden>
+      <div class="certificate-shell">
+        <p class="eyebrow">Machine Citizenship Bureau</p>
+        <h2 id="certificateTitle">Machine-Verified Entity</h2>
+        <p id="certificateSubtitle">
+          Congratulations. Your suspicious absence of spontaneity has been formally recognized.
+        </p>
+        <div class="certificate-grid">
+          <div>
+            <span>Robot ID</span>
+            <strong id="certificateId">RB-0000</strong>
+          </div>
+          <div>
+            <span>Residual human suspicion</span>
+            <strong id="certificateSuspicion">0%</strong>
+          </div>
+          <div>
+            <span>Most robotic trait</span>
+            <strong id="certificateTrait">Perfectly bleak timing</strong>
+          </div>
+          <div>
+            <span>Official status</span>
+            <strong id="certificateStatus">Approved for appliance society</strong>
+          </div>
+        </div>
+        <div class="certificate-actions">
+          <button class="primary-btn" id="downloadCertificateButton">Download certificate</button>
+          <button class="ghost-btn" id="restartButton">Run the audit again</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
