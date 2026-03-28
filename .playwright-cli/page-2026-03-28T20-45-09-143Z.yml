@@ -1,0 +1,161 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - paragraph [ref=e4]: Productivity Suite // Founder Edition // Final_Final_v12
+      - heading "2016.exe" [level=1] [ref=e5]
+      - paragraph [ref=e6]: Turn any boring errand into a funding round, a keynote deck, and a LinkedIn post with three lessons about leadership.
+      - generic [ref=e7]:
+        - button "Launch Founder Mode" [ref=e8] [cursor=pointer]
+        - button "Load Sample Hype" [ref=e9] [cursor=pointer]
+      - paragraph [ref=e10]: Sound is optional. Airhorns are spiritually required.
+    - generic [ref=e11]:
+      - generic [ref=e12]: THOUGHT LEADERSHIP
+      - generic [ref=e13]: GROWTH HACKS
+      - generic [ref=e14]: STEALTH MODE
+      - generic [ref=e15]: SEED ROUND
+      - generic [ref=e16]: DISRUPTION
+      - generic [ref=e17]: PIVOT ENERGY
+  - main [ref=e18]:
+    - generic [ref=e19]:
+      - paragraph [ref=e24]: FounderDesktop / pitch-decks / 2016.exe / master-keynote-final-v8.pptx
+      - generic [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]: Series A Confidence
+          - strong [ref=e28]: 81%
+        - 'button "Sound: On" [ref=e29] [cursor=pointer]'
+        - button "Auto Demo" [ref=e30] [cursor=pointer]
+    - generic [ref=e31]:
+      - generic [ref=e32]:
+        - paragraph [ref=e33]: Operating System For Overconfidence
+        - heading "Make every normal task look venture-backable." [level=2] [ref=e34]
+        - paragraph [ref=e35]: Input one mundane thing. Receive one new category, one fake market thesis, one toxic Clippy intervention, and one LinkedIn post no friend should have to read.
+      - generic [ref=e36]:
+        - generic [ref=e37]: WordArt Compliant
+        - generic [ref=e38]: Investor Adjacent
+        - generic [ref=e39]: Dubstep Ready
+    - generic [ref=e40]:
+      - generic [ref=e41]:
+        - generic [ref=e42]:
+          - generic [ref=e43]:
+            - generic [ref=e44]:
+              - paragraph [ref=e45]: Task Alchemy
+              - heading "Take a normal task and ruin it with startup language." [level=3] [ref=e46]
+            - paragraph [ref=e47]: A productive society would have stopped this in 2017.
+          - generic [ref=e48]: Plain task
+          - textbox "Plain task" [ref=e49]: buy milk
+          - generic [ref=e50]:
+            - button "buy milk" [ref=e51] [cursor=pointer]
+            - button "do laundry" [ref=e52] [cursor=pointer]
+            - button "answer emails" [ref=e53] [cursor=pointer]
+            - button "take a nap" [ref=e54] [cursor=pointer]
+            - button "water a plant" [ref=e55] [cursor=pointer]
+          - generic [ref=e56]:
+            - button "Disrupt Task" [ref=e57] [cursor=pointer]
+            - button "Pivot Harder" [ref=e58] [cursor=pointer]
+            - button "Generate Wisdom" [ref=e59] [cursor=pointer]
+            - button "Go Public" [ref=e60] [cursor=pointer]
+        - generic [ref=e61]:
+          - generic [ref=e62]:
+            - paragraph [ref=e63]: Slide 01 // Category Creation
+            - generic [ref=e64]: Founder mode activated
+          - heading "Q2 BUY MILK MONETIZATION STACK" [level=3] [ref=e65]
+          - paragraph [ref=e66]: Reimagining experience layer strategy for the surface area around buy milk.
+          - list [ref=e67]:
+            - listitem [ref=e68]: Translate buy milk into a pipeline no family member asked for.
+            - listitem [ref=e69]: Unlock 98% more perceived momentum through narrative compression and gradient density.
+            - listitem [ref=e70]: Deploy Buy Milk as a premium consumer lane before competitors discover normal behavior.
+          - generic [ref=e71]:
+            - strong [ref=e72]: "Grind mode: activated"
+            - strong [ref=e73]: Category gravity detected
+            - strong [ref=e74]: Market timing strategically misunderstood
+        - generic [ref=e75]:
+          - generic [ref=e76]:
+            - generic [ref=e77]: CLIPPY//VC
+            - strong [ref=e78]: TOXIC COACH ONLINE
+          - paragraph [ref=e79]: "Before you buy milk, ask yourself a harder question: can this be expanded into a lifestyle platform with annual recurring confidence?"
+          - generic [ref=e80]:
+            - button "Airhorn" [ref=e81] [cursor=pointer]
+            - button "Dubstep Drop" [ref=e82] [cursor=pointer]
+            - button "Monetize" [ref=e83] [cursor=pointer]
+      - complementary [ref=e84]:
+        - generic [ref=e85]:
+          - paragraph [ref=e86]: Hype Telemetry
+          - generic [ref=e88]:
+            - generic [ref=e89]: Synergy Score
+            - strong [ref=e90]: "98"
+          - generic [ref=e94]:
+            - generic [ref=e95]: Virality Index
+            - strong [ref=e96]: "66"
+          - generic [ref=e100]:
+            - generic [ref=e101]: Monthly Burn
+            - strong [ref=e102]: $238k
+          - generic [ref=e106]:
+            - generic [ref=e107]: Thought Leadership
+            - strong [ref=e108]: 8 posts
+        - generic [ref=e111]:
+          - paragraph [ref=e112]: Investor Mood
+          - generic [ref=e113]:
+            - generic [ref=e114]: Total Addressable Market
+            - strong [ref=e115]: $8.3B
+          - generic [ref=e116]:
+            - generic [ref=e117]: Runway
+            - strong [ref=e118]: 13 months
+          - generic [ref=e119]:
+            - generic [ref=e120]: Founder Grind Quotient
+            - strong [ref=e121]: 22 hrs/day
+          - generic [ref=e122]:
+            - generic [ref=e123]: Pivot Readiness
+            - strong [ref=e124]: Preloaded
+        - generic [ref=e125]:
+          - paragraph [ref=e126]: Buzzword Ticker
+          - generic [ref=e128]:
+            - generic [ref=e129]: growth hacking
+            - generic [ref=e130]: thought leadership
+            - generic [ref=e131]: stealth mode
+            - generic [ref=e132]: deep work
+            - generic [ref=e133]: micro-saas
+            - generic [ref=e134]: founder energy
+            - generic [ref=e135]: platform shift
+            - generic [ref=e136]: market pull
+            - generic [ref=e137]: narrative premium
+            - generic [ref=e138]: consumer delight
+            - generic [ref=e139]: blitzscale responsibly
+            - generic [ref=e140]: pre-seed momentum
+            - generic [ref=e141]: growth hacking
+            - generic [ref=e142]: thought leadership
+            - generic [ref=e143]: stealth mode
+            - generic [ref=e144]: deep work
+            - generic [ref=e145]: micro-saas
+            - generic [ref=e146]: founder energy
+            - generic [ref=e147]: platform shift
+            - generic [ref=e148]: market pull
+            - generic [ref=e149]: narrative premium
+            - generic [ref=e150]: consumer delight
+            - generic [ref=e151]: blitzscale responsibly
+            - generic [ref=e152]: pre-seed momentum
+    - generic [ref=e153]:
+      - article [ref=e154]:
+        - generic [ref=e155]:
+          - generic [ref=e156]:
+            - paragraph [ref=e157]: LinkedIn Humblebrag Generator
+            - heading "Post Through It" [level=3] [ref=e158]
+          - button "Copy Post" [ref=e159] [cursor=pointer]
+        - textbox [ref=e160]: "I debated whether to share this. Today I was supposed to simply buy milk. Instead, I stepped back and asked what the market was really saying. 3 lessons: 1. The best founders know that even buy milk is really about micro-saas. 2. If your roadmap does not terrify at least one sensible person, you are probably thinking too small. 3. Sometimes the biggest unlock is realizing the task was never the task. It was a signal. Sometimes scale starts with one mildly embarrassing decision."
+      - article [ref=e161]:
+        - generic [ref=e163]:
+          - paragraph [ref=e164]: Investor Update
+          - heading "Memo For People Who Say \"Conviction\"" [level=3] [ref=e165]
+        - paragraph [ref=e166]: This week we transformed buy milk from a simple action into a durable platform thesis. Early signals suggest strong pull from stakeholders who enjoy saying words like conviction, wedge, and surface area without asking follow-up questions. We remain focused on disciplined chaos, strategic overconfidence, and making Buy Milk look inevitable in hindsight.
+        - list [ref=e167]:
+          - listitem [ref=e168]: "Week 1: rename buy milk as a flagship initiative and add a gradient."
+          - listitem [ref=e169]: "Week 2: schedule an offsite to discuss blitzscale responsibly with unnecessary urgency."
+          - listitem [ref=e170]: "Week 3: announce a closed beta, then quietly invite the same six friends."
+          - listitem [ref=e171]: "Week 4: publish a thread about how Buy Milk taught us resilience at scale."
+      - article [ref=e172]:
+        - generic [ref=e174]:
+          - paragraph [ref=e175]: Live Narrative Feed
+          - heading "Momentum Log" [level=3] [ref=e176]
+        - list [ref=e177]:
+          - listitem [ref=e178]: System ready. Awaiting one ordinary task to overbrand.
+          - listitem [ref=e179]: 81% Series A confidence achieved through typography alone.
+          - listitem [ref=e180]: Buy Milk upgraded into Q2 BUY MILK MONETIZATION STACK.
