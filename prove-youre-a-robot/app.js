@@ -64,6 +64,12 @@ const state = {
     freeze: "pending",
     binary: "pending",
   },
+  completed: {
+    line: false,
+    timing: false,
+    freeze: false,
+    binary: false,
+  },
   metrics: {
     line: "--",
     timing: "--",
@@ -311,9 +317,8 @@ function activateStage(index) {
   state.currentStageIndex = index;
   const stageKey = currentStageKey();
   stageOrder.forEach((key) => {
-    if (state.statuses[key] !== "passed") {
-      updateStatus(key, key === stageKey ? "live" : "pending");
-    }
+    const nextStatus = key === stageKey ? "live" : state.completed[key] ? "passed" : "pending";
+    updateStatus(key, nextStatus);
   });
   updateLadderSelection();
   setStageContent(stageKey);
@@ -333,6 +338,7 @@ function activateStage(index) {
 }
 
 function completeStage(stageKey, message) {
+  state.completed[stageKey] = true;
   updateStatus(stageKey, "passed");
   refs.stageChip.textContent = "Compliance accepted";
   refs.resultText.textContent = message;
@@ -1019,6 +1025,12 @@ function resetEverything() {
     timing: "pending",
     freeze: "pending",
     binary: "pending",
+  };
+  state.completed = {
+    line: false,
+    timing: false,
+    freeze: false,
+    binary: false,
   };
   state.metrics = {
     line: "--",
