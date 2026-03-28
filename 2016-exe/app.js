@@ -1,425 +1,844 @@
-const presets = [
-  "buy milk",
-  "do laundry",
-  "answer emails",
-  "take a nap",
-  "water a plant",
-  "book dentist appointment",
-];
-
-const buzzwords = [
-  "growth hacking",
-  "thought leadership",
-  "stealth mode",
-  "deep work",
-  "micro-saas",
-  "founder energy",
-  "platform shift",
-  "market pull",
-  "narrative premium",
-  "consumer delight",
-  "blitzscale responsibly",
-  "pre-seed momentum",
-];
-
-const categoryWords = ["pipeline", "stack", "ecosystem", "playbook", "engine", "experience layer", "cloud", "flywheel"];
-const marketWords = ["adjacency", "surface area", "vertical", "consumer lane", "ops layer", "premium channel", "demand cluster"];
-const coachTemplates = [
-  "It looks like you're trying to {task}. Have you considered reframing it as a category-defining wedge and scheduling a coffee with investors you met once?",
-  "Normal people would simply {task}. You, however, should ship a beta, call it invite-only, and act surprised by the waitlist.",
-  "Before you {task}, ask yourself a harder question: can this be expanded into a lifestyle platform with annual recurring confidence?",
-  "You are one deck rewrite away from making {task} sound venture-backable. Keep pushing until your relatives stop speaking to you.",
-  "I ran the numbers. {task} is too small. You need a broader thesis, louder gradients, and at least one slide labeled Market Map.",
-];
-
-const lessonOpeners = [
-  "I almost kept this private.",
-  "I wasn't going to post this.",
-  "This nearly stayed in my notes app.",
-  "I debated whether to share this.",
-];
-
-const lessonClosers = [
-  "The market notices when you choose courage over comfort.",
-  "Leadership is mostly timing and dramatic line breaks.",
-  "Sometimes scale starts with one mildly embarrassing decision.",
-  "If this resonates, you're probably building in the arena too.",
-];
-
-const refs = {
-  bootScreen: document.getElementById("bootScreen"),
+const elements = {
   launchButton: document.getElementById("launchButton"),
-  bootDemoButton: document.getElementById("bootDemoButton"),
-  autoDemoButton: document.getElementById("autoDemoButton"),
-  soundToggle: document.getElementById("soundToggle"),
-  confidenceScore: document.getElementById("confidenceScore"),
+  launchOverlay: document.getElementById("launchOverlay"),
+  appShell: document.getElementById("appShell"),
+  taskForm: document.getElementById("taskForm"),
   taskInput: document.getElementById("taskInput"),
-  modeChip: document.getElementById("modeChip"),
-  deckTitle: document.getElementById("deckTitle"),
-  deckSubtitle: document.getElementById("deckSubtitle"),
-  deckBullets: document.getElementById("deckBullets"),
-  taglineOne: document.getElementById("taglineOne"),
-  taglineTwo: document.getElementById("taglineTwo"),
-  taglineThree: document.getElementById("taglineThree"),
-  coachQuote: document.getElementById("coachQuote"),
-  metricSynergy: document.getElementById("metricSynergy"),
-  metricVirality: document.getElementById("metricVirality"),
-  metricBurn: document.getElementById("metricBurn"),
-  metricLeadership: document.getElementById("metricLeadership"),
-  barSynergy: document.getElementById("barSynergy"),
-  barVirality: document.getElementById("barVirality"),
-  barBurn: document.getElementById("barBurn"),
-  barLeadership: document.getElementById("barLeadership"),
-  tamValue: document.getElementById("tamValue"),
-  runwayValue: document.getElementById("runwayValue"),
-  grindValue: document.getElementById("grindValue"),
-  pivotValue: document.getElementById("pivotValue"),
-  buzzTrack: document.getElementById("buzzTrack"),
-  linkedinPost: document.getElementById("linkedinPost"),
-  copyPostButton: document.getElementById("copyPostButton"),
-  investorMemo: document.getElementById("investorMemo"),
-  timeline: document.getElementById("timeline"),
-  logList: document.getElementById("logList"),
-  presetPills: Array.from(document.querySelectorAll(".preset-pill")),
-  modeButtons: Array.from(document.querySelectorAll(".mode-button")),
-  soundButtons: Array.from(document.querySelectorAll(".sound-button")),
+  disruptButton: document.getElementById("disruptButton"),
+  presetButtons: Array.from(document.querySelectorAll("[data-task]")),
+  startupTag: document.getElementById("startupTag"),
+  startupTitle: document.getElementById("startupTitle"),
+  startupSubtitle: document.getElementById("startupSubtitle"),
+  elevatorPitch: document.getElementById("elevatorPitch"),
+  talkingPoints: document.getElementById("talkingPoints"),
+  marketConfidence: document.getElementById("marketConfidence"),
+  modeBadge: document.getElementById("modeBadge"),
+  soundState: document.getElementById("soundState"),
+  synergyMetric: document.getElementById("synergyMetric"),
+  grindMetric: document.getElementById("grindMetric"),
+  tamMetric: document.getElementById("tamMetric"),
+  burnMetric: document.getElementById("burnMetric"),
+  thoughtMetric: document.getElementById("thoughtMetric"),
+  viralMetric: document.getElementById("viralMetric"),
+  chartBars: document.getElementById("chartBars"),
+  investorQuote: document.getElementById("investorQuote"),
+  feedList: document.getElementById("feedList"),
+  clippyMood: document.getElementById("clippyMood"),
+  clippyAdvice: document.getElementById("clippyAdvice"),
+  humblebragOutput: document.getElementById("humblebragOutput"),
+  tickerTrack: document.getElementById("tickerTrack"),
+  toastStack: document.getElementById("toastStack"),
+  pivotButton: document.getElementById("pivotButton"),
+  aiButton: document.getElementById("aiButton"),
+  b2bButton: document.getElementById("b2bButton"),
+  raiseSeedButton: document.getElementById("raiseSeedButton"),
+  linkedinButton: document.getElementById("linkedinButton"),
+  grindButton: document.getElementById("grindButton"),
+  airhornButton: document.getElementById("airhornButton"),
+  dubstepButton: document.getElementById("dubstepButton"),
+  copyDeckButton: document.getElementById("copyDeckButton"),
+  copyBragButton: document.getElementById("copyBragButton"),
 };
+
+const keywordMap = {
+  buy: ["Acquisition", "Procurement", "Commerce"],
+  milk: ["Dairy", "Calcium", "Shelf Life"],
+  do: ["Execution", "Operational"],
+  laundry: ["Textile Refresh", "Garment Turnaround", "Fabric Ops"],
+  call: ["Stakeholder Sync", "Voice Touchpoint", "Retention"],
+  mom: ["Family Stakeholder", "Core Household", "Legacy Network"],
+  empty: ["Zero-Inbox", "Streamlined", "Lean"],
+  inbox: ["Message Surface", "Async Outreach", "Communication Layer"],
+  groceries: ["Nutrient Logistics", "Pantry Infrastructure", "Shelf Ops"],
+  clean: ["Sanitation", "Surface Recovery", "Dust Removal"],
+  dishes: ["Ceramic Reset", "Kitchenware Recovery", "Plate Infrastructure"],
+  laundry: ["Textile Refresh", "Garment Turnaround", "Fabric Ops"],
+  taxes: ["Revenue Compliance", "Regulatory Surrender", "Cashflow Resolution"],
+  gym: ["Human Performance", "Strength Ops", "Body Optimization"],
+  study: ["Knowledge Acceleration", "Exam Readiness", "Learning Velocity"],
+  meeting: ["Alignment Ceremony", "Stakeholder Convergence", "Calendar Theater"],
+  cook: ["Heat-to-Table", "Nutrient Fabrication", "Founder Cuisine"],
+  book: ["Knowledge Asset", "Paperback IP", "Narrative Surface"],
+  sleep: ["Founder Recharge", "Circadian Capital", "Rest Ops"],
+  code: ["Engineering Velocity", "Ship Cadence", "Bug Reduction"],
+  bug: ["Defect", "Quality Surface", "Stability Event"],
+  room: ["Spatial Surface", "Residential Footprint", "Domestic Environment"],
+  apartment: ["Residential Platform", "Urban Footprint", "Rental Layer"],
+  paper: ["Knowledge Deliverable", "Research Artifact", "Slide Fuel"],
+  presentation: ["Narrative Surface", "Keynote Motion", "Deck Layer"],
+};
+
+const pitchOpeners = [
+  "A vertically integrated",
+  "A founder-led",
+  "A category-defining",
+  "A full-stack",
+  "A relentless",
+];
+
+const pitchDomains = [
+  "household logistics platform",
+  "domestic execution cloud",
+  "consumer behavior operating system",
+  "high-velocity lifestyle stack",
+  "offline-to-online habit engine",
+];
+
+const pitchClosers = [
+  "designed to unlock premium human throughput.",
+  "for teams, families, and overstimulated founders.",
+  "with enterprise-grade urgency and no patience for nuance.",
+  "that scales one ordinary errand into recurring meaning.",
+  "built for a world that refuses to stay pre-product-market-fit.",
+];
+
+const taglines = [
+  "Founder-led upside with a suspiciously confident roadmap.",
+  "Moving fast and renaming basic life admin.",
+  "Backed by vibes, hustle, and a deeply fake TAM.",
+  "Turning chores into category creation one slide at a time.",
+  "Powered by jargon, pressure, and premium delusion.",
+];
+
+const monetizationModels = [
+  "subscription-led domestic transformation",
+  "a premium enterprise household tier",
+  "brand-safe calcium adjacency revenue",
+  "freemium urgency with upsellable accountability",
+  "thought-leadership-enabled transaction fees",
+];
+
+const talkingPointStarters = [
+  "Expand the moat around",
+  "Accelerate distribution for",
+  "Operationalize the future of",
+  "Reframe the narrative around",
+  "Unlock omnichannel momentum for",
+];
+
+const talkingPointFinishers = [
+  "without diluting founder DNA.",
+  "before incumbents notice the whitespace.",
+  "while preserving high-intent velocity.",
+  "through narrative-first execution.",
+  "in a market that is emotionally ready.",
+];
+
+const clippyLines = {
+  disrupt: [
+    "It looks like you're doing a basic human errand. Have you tried calling it a platform?",
+    "Users do not want groceries. They want a frictionless nutrient acquisition layer.",
+    "I converted your chore into a category-defining movement. You're welcome.",
+  ],
+  pivot: [
+    "A second pivot shows maturity. A third pivot shows vision.",
+    "If the task still makes sense, you have not pivoted hard enough.",
+    "Say the word 'platform' three more times and investors will feel safer.",
+  ],
+  ai: [
+    "This task had no moat. Adding AI was an act of mercy.",
+    "An AI layer is cheaper than having a real strategy. For now.",
+    "If this doesn't include machine learning, your slide deck is just a diary.",
+  ],
+  b2b: [
+    "Consumer is messy. Enterprise buyers love pretending chores are workflows.",
+    "Wonderful. Normal people were too price sensitive anyway.",
+    "Nothing heals a weak idea like invoicing another company for it.",
+  ],
+  seed: [
+    "A twelve-million-dollar seed round should cover at least six weeks of delusion.",
+    "Excellent. Burn the money on branded hoodies and one impossible hire.",
+    "Pre-revenue is just stealth confidence with better snacks.",
+  ],
+  linkedin: [
+    "The post is perfect. It says nothing, but with leadership spacing.",
+    "You don't need outcomes when you have numbered lessons.",
+    "I added fake humility so the brag can travel farther.",
+  ],
+  grind: [
+    "Your circadian rhythm is now a blocker. Grind through it.",
+    "Wellness is what happens after Series B. Stay focused.",
+    "If this doesn't become a keynote slide, why are you even doing it?",
+  ],
+  utility: [
+    "Airhorn deployed. The product now sounds more funded.",
+    "Dubstep added. The roadmap has become physically louder.",
+    "Every great company begins with one regrettable audio choice.",
+  ],
+};
+
+const investorQuotes = [
+  "This is exactly the kind of deranged conviction we look for at pre-seed.",
+  "I have no idea what this does, but the energy suggests a large round.",
+  "Finally, a company brave enough to industrialize a tiny inconvenience.",
+  "The TAM appears fictional, which means the upside is probably enormous.",
+  "I hate this, which tells me the market may love it.",
+];
+
+const tickerFragments = [
+  "SERIES A ENERGY DETECTED",
+  "THOUGHT LEADERSHIP OPPORTUNITY UNLOCKED",
+  "STEALTH MODE COMPROMISED",
+  "VC SENTENCES INCREASING",
+  "BURN RATE TRENDING ARTISTIC",
+  "HUMAN LANGUAGE BELOW SAFE THRESHOLD",
+  "CATEGORY CREATION CONTINUES WITHOUT CONSENT",
+  "ENTERPRISE INTEREST RUMORED BY ONE GUY ON LINKEDIN",
+];
+
+const feedFragments = [
+  "Founder posted a selfie with the roadmap and called it transparency.",
+  "Three advisors joined after hearing the phrase 'household infrastructure layer.'",
+  "Internal memo confirms the vibe is now 'default alive.'",
+  "A design sprint produced seven gradients and no answers.",
+  "Customer discovery replaced with louder fonts and a stronger jawline.",
+  "One investor asked for traction. Team provided conviction instead.",
+];
+
+const lessonVerbs = [
+  "Scale begins at",
+  "Leadership means choosing",
+  "Operators win when they see",
+  "Momentum compounds around",
+  "Execution gets clearer near",
+];
+
+const lessonObjects = [
+  "the shelf",
+  "the rinse cycle",
+  "the family calendar",
+  "the inbox edge",
+  "the checkout line",
+  "the kitchen counter",
+];
+
+const moodModes = [
+  "Founder mode: activated",
+  "Founder mode: keynote ready",
+  "Founder mode: caffeinated",
+  "Founder mode: irrationally confident",
+  "Founder mode: shipping narrative",
+];
+
+const marketStates = [
+  "Market confidence: irrational",
+  "Market confidence: euphoric",
+  "Market confidence: suspiciously bullish",
+  "Market confidence: unreasonably founder-led",
+  "Market confidence: impossible to justify",
+];
+
+const suffixes = ["Pipeline", "Platform", "Stack", "Cloud", "OS", "Engine", "Protocol"];
+
+const barLabels = ["Narrative", "Moat", "Velocity", "Burn", "Aura"];
 
 const state = {
-  currentPresetIndex: 0,
-  currentMode: "disrupt",
-  soundEnabled: true,
-  audioUnlocked: false,
-  logs: [],
+  launched: false,
+  task: "buy milk",
+  modifiers: {
+    pivot: 0,
+    ai: 0,
+    b2b: 0,
+    seed: 0,
+    linkedin: 0,
+    grind: 0,
+  },
+  audioContext: null,
+  audioArmed: false,
+  deck: null,
 };
 
-let audioContext = null;
-
-function hashString(value) {
-  let hash = 2166136261;
-  for (const char of value) {
-    hash ^= char.charCodeAt(0);
-    hash = Math.imul(hash, 16777619);
+function hashString(input) {
+  let hash = 0;
+  for (let index = 0; index < input.length; index += 1) {
+    hash = (hash << 5) - hash + input.charCodeAt(index);
+    hash |= 0;
   }
-  return Math.abs(hash >>> 0);
+  return Math.abs(hash);
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function pick(list, seed) {
+  return list[seed % list.length];
 }
 
 function titleCase(value) {
-  return value.replace(/\b\w/g, (letter) => letter.toUpperCase());
+  return value.replace(/\b\w/g, (match) => match.toUpperCase());
 }
 
-function upperTask(task) {
-  return task.replace(/[^a-z0-9 ]/gi, "").trim().toUpperCase() || "TASK";
+function normalizeTask(value) {
+  return (value || "")
+    .trim()
+    .replace(/\s+/g, " ")
+    .toLowerCase();
 }
 
-function pick(list, seed, offset = 0) {
-  return list[(seed + offset) % list.length];
+function slugTask(task) {
+  return normalizeTask(task).replace(/[^a-z0-9]+/g, " ").trim();
 }
 
-function appendLog(message) {
-  state.logs.unshift(message);
-  state.logs = state.logs.slice(0, 7);
-  refs.logList.innerHTML = "";
-  state.logs.forEach((entry) => {
-    const item = document.createElement("li");
-    item.textContent = entry;
-    refs.logList.appendChild(item);
-  });
+function transformWord(word, index, seed) {
+  const options = keywordMap[word];
+  if (options && options.length) {
+    return options[(seed + index) % options.length];
+  }
+  return titleCase(word);
+}
+
+function buildCorePhrase(task, seed) {
+  const cleaned = slugTask(task);
+  if (!cleaned) {
+    return "Domestic Disruption";
+  }
+
+  const words = cleaned.split(" ").filter(Boolean);
+  const transformed = words.slice(0, 3).map((word, index) => transformWord(word, index, seed));
+  return transformed.join(" ");
 }
 
 function formatMoney(value) {
-  return `$${value.toFixed(1)}B`;
+  return `$${value.toLocaleString("en-US")}`;
 }
 
-function buildOutputs(task, mode) {
-  const cleanTask = task.trim() || presets[state.currentPresetIndex];
-  const seed = hashString(`${cleanTask}:${mode}`);
-  const taskLabel = titleCase(cleanTask);
-  const quarter = (seed % 4) + 1;
-  const title = `Q${quarter} ${upperTask(cleanTask)} ${pick(
-    ["ACQUISITION", "ENABLEMENT", "RETENTION", "MONETIZATION", "ALIGNMENT"],
-    seed,
-    2,
-  )} ${pick(["PIPELINE", "STACK", "PLAYBOOK", "MOTION", "CLOUD"], seed, 5)}`;
-  const subtitle = `Reimagining ${pick(categoryWords, seed, 8)} strategy for the ${pick(
-    marketWords,
-    seed,
-    12,
-  )} around ${cleanTask}.`;
-  const synergy = 68 + (seed % 31);
-  const virality = 52 + ((seed >> 2) % 43);
-  const burn = 140 + ((seed >> 4) % 590);
-  const leadershipPosts = 4 + ((seed >> 6) % 15);
-  const tam = 4.2 + ((seed % 290) / 10);
-  const runway = 6 + ((seed >> 3) % 15);
-  const grind = 11 + ((seed >> 5) % 13);
-  const pivotValue = pick(
-    ["Aggressive", "Investor-calming", "Preloaded", "Stealth-ready", "Narratively bullish"],
-    seed,
-    21,
-  );
-  const bullets = [
-    `Translate ${cleanTask} into a ${pick(categoryWords, seed, 3)} no family member asked for.`,
-    `Unlock ${synergy}% more perceived momentum through narrative compression and gradient density.`,
-    `Deploy ${taskLabel} as a premium ${pick(marketWords, seed, 7)} before competitors discover normal behavior.`,
-  ];
-  const tags = [
-    `${pick(["Founder mode", "Stealth mode", "Grind mode", "Deck mode"], seed, 13)}: activated`,
-    `${pick(["Thought leadership", "Narrative alpha", "Category gravity", "Conviction capital"], seed, 17)} detected`,
-    `${pick(["Runway", "Burn rate", "Virality", "Market timing"], seed, 22)} strategically misunderstood`,
-  ];
-  const coach = pick(coachTemplates, seed, 1).replace("{task}", cleanTask);
-  const linkedin = [
-    pick(lessonOpeners, seed, 2),
+function formatPercent(value) {
+  return `${Math.round(value)}%`;
+}
+
+function buildLinkedInPost(task, deck, seed) {
+  const normalized = normalizeTask(task) || "doing one ordinary thing";
+  const lessons = Array.from({ length: 3 }, (_, index) => {
+    const opener = pick(lessonVerbs, seed + index * 3);
+    const object = pick(lessonObjects, seed + index * 5);
+    return `${index + 1}. ${opener} ${object} when the market gets noisy.`;
+  });
+
+  return [
+    `I almost gave up on ${normalized} today.`,
     "",
-    `Today I was supposed to simply ${cleanTask}.`,
-    `Instead, I stepped back and asked what the market was really saying.`,
+    "But hard moments reveal what leadership actually looks like when the market gets weird.",
     "",
-    "3 lessons:",
-    `1. The best founders know that even ${cleanTask} is really about ${pick(buzzwords, seed, 3)}.`,
-    `2. If your roadmap does not terrify at least one sensible person, you are probably thinking too small.`,
-    `3. Sometimes the biggest unlock is realizing the task was never the task. It was a signal.`,
+    "3 lessons this taught me:",
+    ...lessons,
     "",
-    pick(lessonClosers, seed, 5),
+    "Honored to keep learning, shipping, and staying close to the customer.",
+    `#leadership #founderjourney #disruption #${deck.hashtags.join(" #")}`,
   ].join("\n");
-  const memo = `This week we transformed ${cleanTask} from a simple action into a durable platform thesis. Early signals suggest strong pull from stakeholders who enjoy saying words like conviction, wedge, and surface area without asking follow-up questions. We remain focused on disciplined chaos, strategic overconfidence, and making ${taskLabel} look inevitable in hindsight.`;
-  const timeline = [
-    `Week 1: rename ${cleanTask} as a flagship initiative and add a gradient.`,
-    `Week 2: schedule an offsite to discuss ${pick(buzzwords, seed, 9)} with unnecessary urgency.`,
-    `Week 3: announce a closed beta, then quietly invite the same six friends.`,
-    `Week 4: publish a thread about how ${taskLabel} taught us resilience at scale.`,
+}
+
+function buildDeck(task, trigger = "disrupt") {
+  const normalizedTask = normalizeTask(task) || "buy milk";
+  const seedBase = hashString(
+    `${normalizedTask}|${JSON.stringify(state.modifiers)}|${trigger}`
+  );
+  const corePhrase = buildCorePhrase(normalizedTask, seedBase);
+  const modifierWeight =
+    state.modifiers.pivot * 4 +
+    state.modifiers.ai * 5 +
+    state.modifiers.b2b * 6 +
+    state.modifiers.seed * 7 +
+    state.modifiers.linkedin * 3 +
+    state.modifiers.grind * 5;
+
+  const titlePrefixOptions = ["Q3", "Stealth", "Founder-Led", "Series-A-Ready", "Next-Gen"];
+  const titlePrefix =
+    state.modifiers.seed > 0
+      ? "Series-A-Ready"
+      : pick(titlePrefixOptions, seedBase + modifierWeight);
+
+  let titleSuffix = pick(suffixes, seedBase + 11);
+  if (state.modifiers.ai > 0) {
+    titleSuffix = "Intelligence Layer";
+  } else if (state.modifiers.b2b > 0) {
+    titleSuffix = "Enterprise Suite";
+  } else if (state.modifiers.pivot > 1) {
+    titleSuffix = "Protocol";
+  }
+
+  const title = `${titlePrefix} ${corePhrase} ${titleSuffix}`;
+  const tagline = pick(taglines, seedBase + 7);
+  const monetization = pick(monetizationModels, seedBase + 9);
+  const elevatorPitch = `${pick(pitchOpeners, seedBase)} ${pick(
+    pitchDomains,
+    seedBase + 3
+  )} focused on ${normalizedTask}, monetized through ${monetization}, ${pick(
+    pitchClosers,
+    seedBase + 5
+  )}`;
+
+  const synergy = clamp(68 + (seedBase % 18) + modifierWeight, 72, 99);
+  const grind = clamp(54 + ((seedBase >> 2) % 20) + state.modifiers.grind * 7 + state.modifiers.seed * 3, 57, 99);
+  const tam = 24 + (seedBase % 34) + state.modifiers.seed * 16 + state.modifiers.b2b * 9;
+  const burn = 9600 + (seedBase % 9000) + modifierWeight * 620;
+  const thought = clamp(48 + ((seedBase >> 3) % 28) + state.modifiers.linkedin * 10 + state.modifiers.ai * 4, 50, 99);
+  const viral = clamp(52 + ((seedBase >> 5) % 34) + state.modifiers.pivot * 6 + state.modifiers.linkedin * 5, 55, 99);
+  const marketConfidence = pick(marketStates, seedBase + modifierWeight);
+  const modeBadge = pick(moodModes, seedBase + state.modifiers.grind + state.modifiers.seed);
+  const clippyAdvice = pick(
+    clippyLines[trigger] || clippyLines.disrupt,
+    seedBase + modifierWeight
+  );
+  const clippyMood = state.modifiers.seed > 0 ? "TERM SHEET ENABLER" : "TOXIC MENTOR ONLINE";
+  const investorQuote = pick(investorQuotes, seedBase + state.modifiers.seed * 2);
+
+  const talkingPoints = Array.from({ length: 4 }, (_, index) => {
+    const starter = pick(talkingPointStarters, seedBase + index * 2);
+    const finisher = pick(talkingPointFinishers, seedBase + index * 7);
+    return `${starter} ${normalizedTask} ${finisher}`;
+  });
+
+  const bars = [synergy, grind, thought, clamp(100 - burn / 350, 24, 86), viral].map(
+    (value, index) => ({
+      label: barLabels[index],
+      value,
+      accent: index % 2 === 0 ? "cyan" : "alt",
+    })
+  );
+
+  const hashtags = [
+    corePhrase.split(" ")[0].toLowerCase().replace(/[^a-z0-9]/g, ""),
+    state.modifiers.ai > 0 ? "aifirst" : "operators",
+    state.modifiers.b2b > 0 ? "enterprise" : "velocity",
+    state.modifiers.seed > 0 ? "funding" : "execution",
+  ].filter(Boolean);
+
+  const feed = [
+    `${title} entered the group chat with a ${formatPercent(viral)} viral loop potential.`,
+    pick(feedFragments, seedBase + 2),
+    `Investor update: ${marketConfidence.replace("Market confidence: ", "")}.`,
+    `${normalizedTask} has been renamed for keynote safety.`,
   ];
-  const confidence = 78 + ((seed >> 7) % 21);
-  const modeLabel =
-    mode === "pivot"
-      ? "Pivot in progress"
-      : mode === "thoughtleadership"
-        ? "Wisdom monetized"
-        : mode === "public"
-          ? "IPO feelings engaged"
-          : "Founder mode activated";
 
-  return {
-    cleanTask,
-    taskLabel,
+  const ticker = [
+    ...tickerFragments,
+    `${corePhrase.toUpperCase()} NARRATIVE ACCELERATING`,
+    `${formatMoney(burn)}/DAY BURN RATE ACCEPTED AS CULTURE`,
+    `HUSTLE INDEX AT ${grind}`,
+    `${title.toUpperCase()} ENTERS ADVISOR WHISPER NETWORK`,
+  ];
+
+  const deck = {
+    task: normalizedTask,
     title,
-    subtitle,
-    bullets,
-    tags,
-    coach,
-    linkedin,
-    memo,
-    timeline,
-    metrics: { synergy, virality, burn, leadershipPosts, tam, runway, grind, pivotValue, confidence },
-    modeLabel,
+    tag: `${titlePrefix.toUpperCase()} ${corePhrase.toUpperCase()}`,
+    subtitle: tagline,
+    elevatorPitch,
+    talkingPoints,
+    metrics: {
+      synergy,
+      grind,
+      tam: `$${tam}B`,
+      burn: `${formatMoney(burn)}/day`,
+      thought,
+      viral,
+    },
+    marketConfidence,
+    modeBadge,
+    clippyAdvice,
+    clippyMood,
+    investorQuote,
+    bars,
+    feed,
+    ticker,
+    hashtags,
   };
+
+  deck.linkedin = buildLinkedInPost(normalizedTask, deck, seedBase);
+  return deck;
 }
 
-function setMetricBar(element, value) {
-  element.style.width = `${Math.max(8, Math.min(100, value))}%`;
+function animateNumber(element, target) {
+  const start = Number(element.dataset.value || 0);
+  const duration = 420;
+  const startTime = performance.now();
+
+  function step(now) {
+    const progress = clamp((now - startTime) / duration, 0, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const value = Math.round(start + (target - start) * eased);
+    element.textContent = String(value);
+    element.dataset.value = String(value);
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    }
+  }
+
+  requestAnimationFrame(step);
 }
 
-function renderOutputs(task, mode) {
-  const output = buildOutputs(task, mode);
-  refs.modeChip.textContent = output.modeLabel;
-  refs.deckTitle.textContent = output.title;
-  refs.deckSubtitle.textContent = output.subtitle;
-  refs.deckBullets.innerHTML = "";
-  output.bullets.forEach((bullet) => {
-    const item = document.createElement("li");
-    item.textContent = bullet;
-    refs.deckBullets.appendChild(item);
+function renderList(element, items) {
+  element.replaceChildren();
+  const fragment = document.createDocumentFragment();
+  items.forEach((item) => {
+    const listItem = document.createElement("li");
+    listItem.textContent = item;
+    fragment.appendChild(listItem);
+  });
+  element.appendChild(fragment);
+}
+
+function renderChart(bars) {
+  elements.chartBars.replaceChildren();
+  const fragment = document.createDocumentFragment();
+
+  bars.forEach((bar) => {
+    const wrapper = document.createElement("div");
+    wrapper.className = "chart-bar";
+
+    const value = document.createElement("div");
+    value.className = "chart-value";
+    value.textContent = `${Math.round(bar.value)}`;
+
+    const column = document.createElement("div");
+    column.className = "chart-column";
+
+    const fill = document.createElement("div");
+    fill.className = `chart-fill ${bar.accent === "alt" ? "alt" : ""}`.trim();
+    fill.style.setProperty("--fill", String(bar.value));
+    column.appendChild(fill);
+
+    const label = document.createElement("div");
+    label.className = "chart-label";
+    label.textContent = bar.label;
+
+    wrapper.append(value, column, label);
+    fragment.appendChild(wrapper);
   });
 
-  refs.taglineOne.textContent = output.tags[0];
-  refs.taglineTwo.textContent = output.tags[1];
-  refs.taglineThree.textContent = output.tags[2];
-  refs.coachQuote.textContent = output.coach;
-  refs.linkedinPost.value = output.linkedin;
-  refs.investorMemo.textContent = output.memo;
-  refs.timeline.innerHTML = "";
-  output.timeline.forEach((entry) => {
-    const item = document.createElement("li");
-    item.textContent = entry;
-    refs.timeline.appendChild(item);
-  });
-
-  refs.metricSynergy.textContent = String(output.metrics.synergy);
-  refs.metricVirality.textContent = String(output.metrics.virality);
-  refs.metricBurn.textContent = `$${output.metrics.burn}k`;
-  refs.metricLeadership.textContent = `${output.metrics.leadershipPosts} posts`;
-  refs.tamValue.textContent = formatMoney(output.metrics.tam);
-  refs.runwayValue.textContent = `${output.metrics.runway} months`;
-  refs.grindValue.textContent = `${output.metrics.grind} hrs/day`;
-  refs.pivotValue.textContent = output.metrics.pivotValue;
-  refs.confidenceScore.textContent = `${output.metrics.confidence}%`;
-
-  setMetricBar(refs.barSynergy, output.metrics.synergy);
-  setMetricBar(refs.barVirality, output.metrics.virality);
-  setMetricBar(refs.barBurn, Math.min(100, output.metrics.burn / 7));
-  setMetricBar(refs.barLeadership, Math.min(100, output.metrics.leadershipPosts * 6));
-
-  appendLog(`${titleCase(output.cleanTask)} upgraded into ${output.title}.`);
-  appendLog(`${output.metrics.confidence}% Series A confidence achieved through typography alone.`);
+  elements.chartBars.appendChild(fragment);
 }
 
-function updatePresetSelection(activeValue) {
-  refs.presetPills.forEach((pill) => {
-    pill.classList.toggle("is-active", pill.dataset.preset === activeValue);
+function renderTicker(items) {
+  const doubled = [...items, ...items];
+  elements.tickerTrack.replaceChildren();
+  const fragment = document.createDocumentFragment();
+  doubled.forEach((item) => {
+    const entry = document.createElement("span");
+    entry.className = "ticker-item";
+    entry.textContent = item;
+    fragment.appendChild(entry);
   });
+  elements.tickerTrack.appendChild(fragment);
 }
 
-function populateBuzzTrack() {
-  const repeated = [...buzzwords, ...buzzwords].map((word) => `<span>${word}</span>`).join("");
-  refs.buzzTrack.innerHTML = repeated;
+function showToast(title, copy) {
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.innerHTML = `<span class="toast-title">${title}</span><div class="toast-copy">${copy}</div>`;
+  elements.toastStack.prepend(toast);
+
+  while (elements.toastStack.children.length > 4) {
+    elements.toastStack.lastElementChild.remove();
+  }
+
+  window.setTimeout(() => {
+    toast.remove();
+  }, 3600);
+}
+
+function renderDeck(deck) {
+  state.deck = deck;
+
+  elements.startupTag.textContent = deck.tag;
+  elements.startupTitle.textContent = deck.title;
+  elements.startupSubtitle.textContent = deck.subtitle;
+  elements.elevatorPitch.textContent = deck.elevatorPitch;
+  renderList(elements.talkingPoints, deck.talkingPoints);
+
+  elements.marketConfidence.textContent = deck.marketConfidence;
+  elements.modeBadge.textContent = deck.modeBadge;
+
+  animateNumber(elements.synergyMetric, deck.metrics.synergy);
+  animateNumber(elements.grindMetric, deck.metrics.grind);
+  elements.tamMetric.textContent = deck.metrics.tam;
+  elements.burnMetric.textContent = deck.metrics.burn;
+  animateNumber(elements.thoughtMetric, deck.metrics.thought);
+  animateNumber(elements.viralMetric, deck.metrics.viral);
+
+  renderChart(deck.bars);
+
+  elements.investorQuote.textContent = `“${deck.investorQuote}”`;
+  renderList(elements.feedList, deck.feed);
+  elements.clippyMood.textContent = deck.clippyMood;
+  elements.clippyAdvice.textContent = deck.clippyAdvice;
+  elements.humblebragOutput.value = deck.linkedin;
+  renderTicker(deck.ticker);
+}
+
+function renderSoundState() {
+  elements.soundState.textContent = state.audioArmed
+    ? "Sound: armed and dangerous"
+    : "Sound: arms on first click";
 }
 
 function ensureAudio() {
-  if (!audioContext) {
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  if (!window.AudioContext && !window.webkitAudioContext) {
+    elements.soundState.textContent = "Sound: browser said no";
+    return null;
   }
-  if (audioContext.state === "suspended") {
-    audioContext.resume().catch(() => {});
+
+  if (!state.audioContext) {
+    const AudioCtor = window.AudioContext || window.webkitAudioContext;
+    state.audioContext = new AudioCtor();
   }
-  state.audioUnlocked = true;
-  return audioContext;
+
+  if (state.audioContext.state === "suspended") {
+    state.audioContext.resume().catch(() => null);
+  }
+
+  state.audioArmed = true;
+  renderSoundState();
+  return state.audioContext;
 }
 
-function playTone(frequency, duration = 0.12, type = "square", volume = 0.06, startDelay = 0) {
-  if (!state.soundEnabled) return;
+function playTone({
+  frequency = 440,
+  duration = 0.2,
+  type = "sawtooth",
+  gain = 0.06,
+  startTime = 0,
+  endFrequency = frequency,
+}) {
   const context = ensureAudio();
+  if (!context) {
+    return;
+  }
+
   const oscillator = context.createOscillator();
-  const gain = context.createGain();
+  const gainNode = context.createGain();
+  const now = context.currentTime + startTime;
+
   oscillator.type = type;
-  oscillator.frequency.value = frequency;
-  gain.gain.value = volume;
-  oscillator.connect(gain);
-  gain.connect(context.destination);
-  const startAt = context.currentTime + startDelay;
-  gain.gain.setValueAtTime(volume, startAt);
-  gain.gain.exponentialRampToValueAtTime(0.0001, startAt + duration);
-  oscillator.start(startAt);
-  oscillator.stop(startAt + duration);
+  oscillator.frequency.setValueAtTime(frequency, now);
+  oscillator.frequency.linearRampToValueAtTime(endFrequency, now + duration);
+
+  gainNode.gain.setValueAtTime(0.0001, now);
+  gainNode.gain.exponentialRampToValueAtTime(gain, now + 0.02);
+  gainNode.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+  oscillator.connect(gainNode);
+  gainNode.connect(context.destination);
+  oscillator.start(now);
+  oscillator.stop(now + duration + 0.02);
 }
 
-function playSound(name) {
-  if (!state.soundEnabled) return;
-  if (name === "airhorn") {
-    playTone(440, 0.2, "sawtooth", 0.06);
-    playTone(660, 0.24, "square", 0.05, 0.02);
-  } else if (name === "drop") {
-    playTone(120, 0.28, "sawtooth", 0.08);
-    playTone(84, 0.34, "triangle", 0.08, 0.08);
-    playTone(540, 0.12, "square", 0.04, 0.14);
-  } else if (name === "cash") {
-    playTone(790, 0.08, "triangle", 0.05);
-    playTone(1080, 0.08, "triangle", 0.05, 0.07);
-    playTone(1320, 0.1, "triangle", 0.05, 0.14);
-  } else {
-    playTone(520, 0.08, "square", 0.04);
+function playSequence(notes) {
+  notes.forEach((note) => playTone(note));
+}
+
+function playStartupDing() {
+  playSequence([
+    { frequency: 440, duration: 0.12, type: "triangle", gain: 0.04, startTime: 0 },
+    { frequency: 660, duration: 0.2, type: "triangle", gain: 0.05, startTime: 0.12 },
+  ]);
+}
+
+function playPivotSound() {
+  playSequence([
+    { frequency: 560, duration: 0.08, type: "square", gain: 0.035, startTime: 0 },
+    { frequency: 320, duration: 0.12, type: "sawtooth", gain: 0.05, startTime: 0.08, endFrequency: 220 },
+  ]);
+}
+
+function playAiSound() {
+  playSequence([
+    { frequency: 240, duration: 0.12, type: "triangle", gain: 0.04, startTime: 0 },
+    { frequency: 720, duration: 0.18, type: "square", gain: 0.04, startTime: 0.1 },
+    { frequency: 960, duration: 0.08, type: "square", gain: 0.03, startTime: 0.24 },
+  ]);
+}
+
+function playSeedSound() {
+  playSequence([
+    { frequency: 660, duration: 0.08, type: "triangle", gain: 0.04, startTime: 0 },
+    { frequency: 880, duration: 0.1, type: "triangle", gain: 0.04, startTime: 0.08 },
+    { frequency: 1170, duration: 0.24, type: "sine", gain: 0.03, startTime: 0.18 },
+  ]);
+}
+
+function playNotificationSound() {
+  playSequence([
+    { frequency: 520, duration: 0.08, type: "triangle", gain: 0.035, startTime: 0 },
+    { frequency: 740, duration: 0.14, type: "triangle", gain: 0.035, startTime: 0.1 },
+  ]);
+}
+
+function playAirhorn() {
+  playSequence([
+    { frequency: 180, duration: 0.35, type: "sawtooth", gain: 0.08, startTime: 0, endFrequency: 210 },
+    { frequency: 240, duration: 0.3, type: "square", gain: 0.05, startTime: 0.03, endFrequency: 270 },
+  ]);
+}
+
+function playDubstep() {
+  playSequence([
+    { frequency: 120, duration: 0.16, type: "sawtooth", gain: 0.08, startTime: 0, endFrequency: 70 },
+    { frequency: 180, duration: 0.12, type: "square", gain: 0.06, startTime: 0.18, endFrequency: 120 },
+    { frequency: 130, duration: 0.22, type: "sawtooth", gain: 0.08, startTime: 0.35, endFrequency: 90 },
+  ]);
+}
+
+function updateTaskIfNeeded(nextTask) {
+  const normalized = normalizeTask(nextTask || elements.taskInput.value || state.task);
+  state.task = normalized || "buy milk";
+  elements.taskInput.value = state.task;
+  return state.task;
+}
+
+function applyTrigger(trigger, toastCopy, soundEffect) {
+  const task = updateTaskIfNeeded();
+  const deck = buildDeck(task, trigger);
+  renderDeck(deck);
+
+  if (typeof soundEffect === "function") {
+    soundEffect();
   }
+
+  showToast(trigger.toUpperCase(), toastCopy);
 }
 
-function generate(mode = state.currentMode, withSound = true) {
-  state.currentMode = mode;
-  const task = refs.taskInput.value.trim() || presets[state.currentPresetIndex];
-  refs.taskInput.value = task;
-  renderOutputs(task, mode);
-  updatePresetSelection(task);
-  if (withSound) {
-    playSound(mode === "public" ? "airhorn" : mode === "thoughtleadership" ? "cash" : "drop");
-  }
+function launchExperience() {
+  state.launched = true;
+  document.body.classList.add("launched");
+  elements.appShell.setAttribute("aria-hidden", "false");
+  elements.launchOverlay.setAttribute("aria-hidden", "true");
+  renderSoundState();
+  elements.taskInput.focus();
+  playStartupDing();
+  showToast("Founder Mode", "Desktop experience initialized. Human language fading.");
 }
 
-function cyclePreset() {
-  state.currentPresetIndex = (state.currentPresetIndex + 1) % presets.length;
-  const next = presets[state.currentPresetIndex];
-  refs.taskInput.value = next;
-  updatePresetSelection(next);
-  generate("public");
-}
-
-async function copyPost() {
-  const value = refs.linkedinPost.value;
+async function copyText(text, successTitle) {
   try {
-    await navigator.clipboard.writeText(value);
-    appendLog("LinkedIn post copied. HR morale downgraded.");
+    await navigator.clipboard.writeText(text);
   } catch (error) {
-    refs.linkedinPost.focus();
-    refs.linkedinPost.select();
-    appendLog("Clipboard denied. Post selected manually like it is still 2016.");
+    const helper = document.createElement("textarea");
+    helper.value = text;
+    helper.setAttribute("readonly", "");
+    helper.style.position = "absolute";
+    helper.style.left = "-9999px";
+    document.body.appendChild(helper);
+    helper.select();
+    document.execCommand("copy");
+    helper.remove();
   }
-  playSound("cash");
+
+  showToast(successTitle, "Copied to clipboard for immediate personal-brand misuse.");
+  playNotificationSound();
 }
 
-refs.launchButton.addEventListener("click", () => {
-  refs.bootScreen.classList.add("is-hidden");
-  generate("disrupt");
-  appendLog("2016.exe booted. Ethical restraint offline.");
-});
-
-refs.bootDemoButton.addEventListener("click", () => {
-  refs.taskInput.value = presets[0];
-  updatePresetSelection(presets[0]);
-  refs.bootScreen.classList.add("is-hidden");
-  generate("public");
-  appendLog("Sample hype loaded for immediate investor theater.");
-});
-
-refs.autoDemoButton.addEventListener("click", cyclePreset);
-
-refs.soundToggle.addEventListener("click", () => {
-  state.soundEnabled = !state.soundEnabled;
-  refs.soundToggle.textContent = `Sound: ${state.soundEnabled ? "On" : "Off"}`;
-  if (state.soundEnabled) {
-    playSound("cash");
-    appendLog("Sound restored. Taste level unchanged.");
-  } else {
-    appendLog("Sound muted. Dubstep remains spiritually active.");
+function renderStateText() {
+  if (!state.deck) {
+    return "2016.exe is idle.";
   }
+
+  return [
+    `Task: ${state.deck.task}`,
+    `Title: ${state.deck.title}`,
+    `Pitch: ${state.deck.elevatorPitch}`,
+    `Synergy: ${state.deck.metrics.synergy}`,
+    `Burn: ${state.deck.metrics.burn}`,
+    `Advice: ${state.deck.clippyAdvice}`,
+  ].join("\n");
+}
+
+elements.launchButton.addEventListener("click", () => {
+  ensureAudio();
+  launchExperience();
 });
 
-refs.modeButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    generate(button.dataset.mode);
-  });
-});
-
-refs.presetPills.forEach((pill, index) => {
-  pill.addEventListener("click", () => {
-    state.currentPresetIndex = index;
-    refs.taskInput.value = pill.dataset.preset;
-    updatePresetSelection(pill.dataset.preset);
-    appendLog(`${titleCase(pill.dataset.preset)} selected as the next victim.`);
-  });
-});
-
-refs.soundButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    playSound(button.dataset.sound);
-    appendLog(`${titleCase(button.dataset.sound)} deployed to intensify founder confidence.`);
-  });
-});
-
-refs.copyPostButton.addEventListener("click", copyPost);
-
-["pointerdown", "keydown", "touchstart"].forEach((eventName) => {
-  document.addEventListener(
-    eventName,
-    () => {
-      if (!state.audioUnlocked && state.soundEnabled) {
-        try {
-          ensureAudio();
-        } catch (error) {
-          // Audio is decorative; ignore failures.
-        }
-      }
-    },
-    { passive: true },
+elements.taskForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  state.modifiers = {
+    pivot: 0,
+    ai: 0,
+    b2b: 0,
+    seed: 0,
+    linkedin: 0,
+    grind: 0,
+  };
+  applyTrigger(
+    "disrupt",
+    "Task successfully reframed as a category-defining platform.",
+    playStartupDing
   );
 });
 
-populateBuzzTrack();
-updatePresetSelection("buy milk");
-generate("disrupt", false);
-appendLog("System ready. Awaiting one ordinary task to overbrand.");
+elements.presetButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    elements.taskInput.value = button.dataset.task || "";
+    state.modifiers = {
+      pivot: 0,
+      ai: 0,
+      b2b: 0,
+      seed: 0,
+      linkedin: 0,
+      grind: 0,
+    };
+    applyTrigger(
+      "disrupt",
+      `${button.dataset.task} has been upgraded for keynote compatibility.`,
+      playStartupDing
+    );
+  });
+});
+
+elements.pivotButton.addEventListener("click", () => {
+  state.modifiers.pivot += 1;
+  applyTrigger("pivot", "Narrative shifted. Accountability postponed.", playPivotSound);
+});
+
+elements.aiButton.addEventListener("click", () => {
+  state.modifiers.ai += 1;
+  applyTrigger("ai", "AI layer activated. Strategy remains optional.", playAiSound);
+});
+
+elements.b2bButton.addEventListener("click", () => {
+  state.modifiers.b2b += 1;
+  applyTrigger("b2b", "Enterprise positioning applied. Consumer clarity removed.", playPivotSound);
+});
+
+elements.raiseSeedButton.addEventListener("click", () => {
+  state.modifiers.seed += 1;
+  applyTrigger("seed", "A fictional twelve-million-dollar round just closed.", playSeedSound);
+});
+
+elements.linkedinButton.addEventListener("click", () => {
+  state.modifiers.linkedin += 1;
+  applyTrigger("linkedin", "The post is live. Mutuals are pretending to be inspired.", playNotificationSound);
+});
+
+elements.grindButton.addEventListener("click", () => {
+  state.modifiers.grind += 1;
+  applyTrigger("grind", "Wellness deferred. Founder energy maxed out.", playDubstep);
+});
+
+elements.airhornButton.addEventListener("click", () => {
+  playAirhorn();
+  showToast("AIRHORN", "Product-market fit has become acoustically mandatory.");
+  const deck = buildDeck(updateTaskIfNeeded(), "utility");
+  renderDeck(deck);
+});
+
+elements.dubstepButton.addEventListener("click", () => {
+  playDubstep();
+  showToast("DUBSTEP", "Deck soundtrack upgraded from bad to spiritually illegal.");
+  const deck = buildDeck(updateTaskIfNeeded(), "utility");
+  renderDeck(deck);
+});
+
+elements.copyDeckButton.addEventListener("click", () => {
+  const text = renderStateText();
+  copyText(text, "Pitch Deck");
+});
+
+elements.copyBragButton.addEventListener("click", () => {
+  copyText(elements.humblebragOutput.value, "LinkedIn Post");
+});
+
+renderDeck(buildDeck(state.task, "disrupt"));
+renderSoundState();
+window.render_game_to_text = renderStateText;
+window.generateDeckForTask = (task) => buildDeck(task, "disrupt");

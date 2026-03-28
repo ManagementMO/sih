@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -6,242 +6,281 @@
     <title>2016.exe</title>
     <meta
       name="description"
-      content="A cursed retro startup productivity app that turns any normal task into a 2016 keynote, KPI dashboard, and unbearable LinkedIn post."
+      content="A cursed retro startup productivity operating system for normal errands."
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="noise" aria-hidden="true"></div>
-    <div class="grid-haze" aria-hidden="true"></div>
+    <div class="backdrop-orb orb-a" aria-hidden="true"></div>
+    <div class="backdrop-orb orb-b" aria-hidden="true"></div>
+    <div class="scanlines" aria-hidden="true"></div>
 
-    <div class="boot-screen" id="bootScreen">
-      <div class="boot-copy">
-        <p class="eyebrow">Productivity Suite // Founder Edition // Final_Final_v12</p>
-        <h1>2016.exe</h1>
-        <p class="boot-lead">
-          Turn any boring errand into a funding round, a keynote deck, and a LinkedIn post with
-          three lessons about leadership.
+    <div id="launchOverlay" class="launch-overlay">
+      <div class="launch-card">
+        <div class="launch-badge">WINDOWS FOUNDER EDITION // 2016</div>
+        <p class="launch-kicker">Normal chores are dead.</p>
+        <h1 class="launch-logo">2016.exe</h1>
+        <p class="launch-copy">
+          The first operating system that converts errands into keynote slides,
+          fake venture rounds, and unbearable thought leadership.
         </p>
-        <div class="boot-actions">
-          <button class="chrome-button primary" id="launchButton" type="button">Launch Founder Mode</button>
-          <button class="chrome-button secondary" id="bootDemoButton" type="button">Load Sample Hype</button>
-        </div>
-        <p class="boot-microcopy">Sound is optional. Airhorns are spiritually required.</p>
-      </div>
-
-      <div class="boot-marquee">
-        <span>THOUGHT LEADERSHIP</span>
-        <span>GROWTH HACKS</span>
-        <span>STEALTH MODE</span>
-        <span>SEED ROUND</span>
-        <span>DISRUPTION</span>
-        <span>PIVOT ENERGY</span>
+        <button id="launchButton" class="hero-button" type="button">
+          ENTER FOUNDER MODE
+        </button>
+        <p class="launch-note">
+          Includes toxic Clippy mentorship, fabricated KPIs, and optional
+          dubstep.
+        </p>
       </div>
     </div>
 
-    <main class="app-shell">
-      <header class="topbar">
-        <div class="chrome-strip">
-          <span class="dot red"></span>
-          <span class="dot gold"></span>
-          <span class="dot green"></span>
-          <p>FounderDesktop / pitch-decks / 2016.exe / master-keynote-final-v8.pptx</p>
-        </div>
-        <div class="topbar-actions">
-          <div class="signal-box">
-            <span>Series A Confidence</span>
-            <strong id="confidenceScore">91%</strong>
+    <main id="appShell" class="desktop-shell" aria-hidden="true">
+      <header class="hero-panel window">
+        <div class="window-titlebar">
+          <div class="window-dots" aria-hidden="true">
+            <span></span><span></span><span></span>
           </div>
-          <button class="chrome-button secondary" id="soundToggle" type="button">Sound: On</button>
-          <button class="chrome-button secondary" id="autoDemoButton" type="button">Auto Demo</button>
+          <span class="window-title">CATEGORY-DEFINING PRODUCTIVITY SUITE</span>
+        </div>
+        <div class="hero-panel-body">
+          <div class="hero-copy">
+            <p class="hero-kicker">Hustle OS // build 2.0.1.6</p>
+            <h1 class="hero-logo">2016.exe</h1>
+            <p class="hero-subtitle">
+              Type a normal human task. Receive a founder-brained startup
+              platform with irrational market confidence.
+            </p>
+          </div>
+
+          <div class="hero-controls">
+            <form id="taskForm" class="task-form">
+              <label class="task-label" for="taskInput">Enter a normal task</label>
+              <div class="task-row">
+                <input
+                  id="taskInput"
+                  name="task"
+                  type="text"
+                  autocomplete="off"
+                  maxlength="80"
+                  placeholder="buy milk"
+                />
+                <button id="disruptButton" class="primary-button" type="submit">
+                  DISRUPT TASK
+                </button>
+              </div>
+            </form>
+
+            <div class="preset-row" aria-label="Quick presets">
+              <button class="preset-chip" type="button" data-task="buy milk">
+                buy milk
+              </button>
+              <button class="preset-chip" type="button" data-task="do laundry">
+                do laundry
+              </button>
+              <button class="preset-chip" type="button" data-task="call mom">
+                call mom
+              </button>
+              <button class="preset-chip" type="button" data-task="empty inbox">
+                empty inbox
+              </button>
+            </div>
+          </div>
         </div>
       </header>
 
-      <section class="hero-band">
-        <div class="hero-copy">
-          <p class="eyebrow">Operating System For Overconfidence</p>
-          <h2>Make every normal task look venture-backable.</h2>
-          <p>
-            Input one mundane thing. Receive one new category, one fake market thesis, one toxic
-            Clippy intervention, and one LinkedIn post no friend should have to read.
-          </p>
-        </div>
-        <div class="hero-flags">
-          <span>WordArt Compliant</span>
-          <span>Investor Adjacent</span>
-          <span>Dubstep Ready</span>
-        </div>
-      </section>
-
-      <section class="workspace">
-        <section class="main-stage">
-          <div class="studio">
-            <div class="studio-head">
-              <div>
-                <p class="eyebrow">Task Alchemy</p>
-                <h3>Take a normal task and ruin it with startup language.</h3>
-              </div>
-              <p class="stage-note">A productive society would have stopped this in 2017.</p>
+      <section class="workspace-grid">
+        <article class="window generator-window">
+          <div class="window-titlebar">
+            <div class="window-dots" aria-hidden="true">
+              <span></span><span></span><span></span>
             </div>
-
-            <label class="task-label" for="taskInput">Plain task</label>
-            <textarea id="taskInput" spellcheck="false">buy milk</textarea>
-
-            <div class="preset-row" id="presetRow">
-              <button class="preset-pill" data-preset="buy milk" type="button">buy milk</button>
-              <button class="preset-pill" data-preset="do laundry" type="button">do laundry</button>
-              <button class="preset-pill" data-preset="answer emails" type="button">answer emails</button>
-              <button class="preset-pill" data-preset="take a nap" type="button">take a nap</button>
-              <button class="preset-pill" data-preset="water a plant" type="button">water a plant</button>
-            </div>
-
-            <div class="action-row">
-              <button class="chrome-button primary mode-button" data-mode="disrupt" type="button">Disrupt Task</button>
-              <button class="chrome-button secondary mode-button" data-mode="pivot" type="button">Pivot Harder</button>
-              <button class="chrome-button secondary mode-button" data-mode="thoughtleadership" type="button">Generate Wisdom</button>
-              <button class="chrome-button secondary mode-button" data-mode="public" type="button">Go Public</button>
-            </div>
+            <span class="window-title">TASK REBRAND ENGINE</span>
           </div>
 
-          <div class="deck-canvas">
-            <div class="canvas-head">
-              <p class="eyebrow">Slide 01 // Category Creation</p>
-              <div class="meta-chip" id="modeChip">Founder mode activated</div>
-            </div>
-
-            <h3 id="deckTitle">Q3 MILK ACQUISITION PIPELINE</h3>
-            <p class="deck-subtitle" id="deckSubtitle">
-              Reimagining refrigerator-adjacent procurement as a premium consumer flywheel.
+          <div class="window-body">
+            <p id="startupTag" class="output-tag">Q3 DOMESTIC DISRUPTION</p>
+            <h2 id="startupTitle" class="startup-title">
+              Dairy Acquisition Platform
+            </h2>
+            <p id="startupSubtitle" class="startup-subtitle">
+              Founder-led calcium logistics with irrational upside.
             </p>
 
-            <ul class="deck-bullets" id="deckBullets">
-              <li>Replace errands with platform thinking and three different gradients.</li>
-              <li>Turn one grocery run into a repeatable household growth engine.</li>
-              <li>Position milk as a category-defining hydration experience layer.</li>
-            </ul>
+            <div class="status-row">
+              <span id="marketConfidence" class="status-pill">
+                Market confidence: irrational
+              </span>
+              <span id="modeBadge" class="status-pill">
+                Founder mode: warming up
+              </span>
+              <span id="soundState" class="status-pill">
+                Sound: arms on first click
+              </span>
+            </div>
 
-            <div class="tagline-grid">
-              <strong id="taglineOne">Founder mode: activated</strong>
-              <strong id="taglineTwo">Thought leadership opportunity detected</strong>
-              <strong id="taglineThree">Burn rate strategically misunderstood</strong>
+            <div class="copy-grid">
+              <section class="copy-card">
+                <div class="section-header">
+                  <h3>Elevator pitch</h3>
+                </div>
+                <p id="elevatorPitch"></p>
+              </section>
+
+              <section class="copy-card">
+                <div class="section-header">
+                  <h3>Q3 talking points</h3>
+                </div>
+                <ul id="talkingPoints" class="bullets"></ul>
+              </section>
+            </div>
+
+            <div class="chaos-row">
+              <button id="pivotButton" class="chaos-button" type="button">
+                PIVOT AGAIN
+              </button>
+              <button id="aiButton" class="chaos-button" type="button">
+                ADD AI
+              </button>
+              <button id="b2bButton" class="chaos-button" type="button">
+                MAKE IT B2B
+              </button>
+              <button id="raiseSeedButton" class="chaos-button" type="button">
+                RAISE $12M SEED
+              </button>
+              <button id="linkedinButton" class="chaos-button" type="button">
+                POST ON LINKEDIN
+              </button>
+              <button id="grindButton" class="chaos-button" type="button">
+                GRINDSET MODE
+              </button>
+            </div>
+
+            <div class="utility-row">
+              <button id="airhornButton" class="utility-button" type="button">
+                AIRHORN
+              </button>
+              <button id="dubstepButton" class="utility-button" type="button">
+                DUBSTEP
+              </button>
+              <button id="copyDeckButton" class="utility-button" type="button">
+                COPY PITCH
+              </button>
             </div>
           </div>
+        </article>
 
-          <div class="coach-module">
-            <div class="coach-badge">
-              <span>CLIPPY//VC</span>
-              <strong>TOXIC COACH ONLINE</strong>
+        <article class="window dashboard-window">
+          <div class="window-titlebar">
+            <div class="window-dots" aria-hidden="true">
+              <span></span><span></span><span></span>
             </div>
-            <p class="coach-quote" id="coachQuote">
-              It looks like you're trying to buy milk. Have you considered calling it a dairy
-              adjacency platform and raising a pre-seed round?
-            </p>
-            <div class="coach-actions">
-              <button class="chrome-button secondary sound-button" data-sound="airhorn" type="button">Airhorn</button>
-              <button class="chrome-button secondary sound-button" data-sound="drop" type="button">Dubstep Drop</button>
-              <button class="chrome-button secondary sound-button" data-sound="cash" type="button">Monetize</button>
-            </div>
+            <span class="window-title">HYPE DASHBOARD</span>
           </div>
-        </section>
 
-        <aside class="hype-rail">
-          <div class="rail-card">
-            <p class="eyebrow">Hype Telemetry</p>
-            <div class="metric" data-metric="synergy">
-              <div class="metric-label">
-                <span>Synergy Score</span>
-                <strong id="metricSynergy">94</strong>
+          <div class="window-body">
+            <div class="metric-grid">
+              <div class="metric-card">
+                <span class="metric-label">Synergy Score</span>
+                <strong id="synergyMetric" class="metric-value">94</strong>
               </div>
-              <div class="metric-bar"><div id="barSynergy"></div></div>
-            </div>
-            <div class="metric" data-metric="virality">
-              <div class="metric-label">
-                <span>Virality Index</span>
-                <strong id="metricVirality">88</strong>
+              <div class="metric-card">
+                <span class="metric-label">Grind Index</span>
+                <strong id="grindMetric" class="metric-value">88</strong>
               </div>
-              <div class="metric-bar"><div id="barVirality"></div></div>
-            </div>
-            <div class="metric" data-metric="burn">
-              <div class="metric-label">
-                <span>Monthly Burn</span>
-                <strong id="metricBurn">$420k</strong>
+              <div class="metric-card">
+                <span class="metric-label">TAM Inflation</span>
+                <strong id="tamMetric" class="metric-value">$92B</strong>
               </div>
-              <div class="metric-bar burn"><div id="barBurn"></div></div>
-            </div>
-            <div class="metric" data-metric="leadership">
-              <div class="metric-label">
-                <span>Thought Leadership</span>
-                <strong id="metricLeadership">12 posts</strong>
+              <div class="metric-card">
+                <span class="metric-label">Burn Rate</span>
+                <strong id="burnMetric" class="metric-value">$18,400/day</strong>
               </div>
-              <div class="metric-bar"><div id="barLeadership"></div></div>
+              <div class="metric-card">
+                <span class="metric-label">Thought Velocity</span>
+                <strong id="thoughtMetric" class="metric-value">73</strong>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">Viral Loop</span>
+                <strong id="viralMetric" class="metric-value">81</strong>
+              </div>
             </div>
+
+            <section class="copy-card chart-card">
+              <div class="section-header">
+                <h3>Projected keynote chart</h3>
+              </div>
+              <div id="chartBars" class="chart-bars"></div>
+            </section>
+
+            <section class="copy-card">
+              <div class="section-header">
+                <h3>Investor sentiment</h3>
+              </div>
+              <blockquote id="investorQuote" class="investor-quote">
+                “This shouldn’t work, which is exactly why it feels inevitable.”
+              </blockquote>
+            </section>
+
+            <section class="copy-card">
+              <div class="section-header">
+                <h3>Live startup feed</h3>
+              </div>
+              <ul id="feedList" class="feed-list"></ul>
+            </section>
+          </div>
+        </article>
+
+        <article class="window coach-window">
+          <div class="window-titlebar">
+            <div class="window-dots" aria-hidden="true">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="window-title">CLIPPY VC COACH</span>
           </div>
 
-          <div class="rail-card stat-stack">
-            <p class="eyebrow">Investor Mood</p>
-            <div class="stat-row">
-              <span>Total Addressable Market</span>
-              <strong id="tamValue">$18.4B</strong>
+          <div class="window-body coach-body">
+            <div class="coach-panel">
+              <div class="clippy-avatar" aria-hidden="true">
+                <div class="clippy-eye left"></div>
+                <div class="clippy-eye right"></div>
+                <div class="clippy-mouth"></div>
+              </div>
+              <div class="clippy-bubble">
+                <div id="clippyMood" class="clippy-mood">
+                  TOXIC MENTOR ONLINE
+                </div>
+                <p id="clippyAdvice" class="clippy-advice"></p>
+              </div>
             </div>
-            <div class="stat-row">
-              <span>Runway</span>
-              <strong id="runwayValue">14 months</strong>
-            </div>
-            <div class="stat-row">
-              <span>Founder Grind Quotient</span>
-              <strong id="grindValue">22 hrs/day</strong>
-            </div>
-            <div class="stat-row">
-              <span>Pivot Readiness</span>
-              <strong id="pivotValue">Locked in</strong>
-            </div>
-          </div>
 
-          <div class="rail-card">
-            <p class="eyebrow">Buzzword Ticker</p>
-            <div class="buzz-strip">
-              <div class="buzz-track" id="buzzTrack"></div>
-            </div>
+            <section class="copy-card">
+              <div class="section-header">
+                <h3>LinkedIn humblebrag</h3>
+                <button id="copyBragButton" class="utility-button" type="button">
+                  COPY POST
+                </button>
+              </div>
+              <textarea id="humblebragOutput" readonly></textarea>
+            </section>
           </div>
-        </aside>
+        </article>
       </section>
 
-      <section class="story-grid">
-        <article class="story-panel wide">
-          <div class="panel-head">
-            <div>
-              <p class="eyebrow">LinkedIn Humblebrag Generator</p>
-              <h3>Post Through It</h3>
-            </div>
-            <button class="chrome-button secondary" id="copyPostButton" type="button">Copy Post</button>
+      <footer class="ticker-shell window">
+        <div class="window-titlebar">
+          <div class="window-dots" aria-hidden="true">
+            <span></span><span></span><span></span>
           </div>
-          <textarea id="linkedinPost" readonly spellcheck="false"></textarea>
-        </article>
+          <span class="window-title">REAL-TIME VIBE TICKER</span>
+        </div>
+        <div class="ticker-body">
+          <div class="ticker-mask">
+            <div id="tickerTrack" class="ticker-track"></div>
+          </div>
+        </div>
+      </footer>
 
-        <article class="story-panel">
-          <div class="panel-head">
-            <div>
-              <p class="eyebrow">Investor Update</p>
-              <h3>Memo For People Who Say "Conviction"</h3>
-            </div>
-          </div>
-          <p class="memo-copy" id="investorMemo">
-            We are excited to announce that milk has evolved from a commodity into a household
-            retention surface with premium narrative upside.
-          </p>
-          <ol class="timeline" id="timeline"></ol>
-        </article>
-
-        <article class="story-panel">
-          <div class="panel-head">
-            <div>
-              <p class="eyebrow">Live Narrative Feed</p>
-              <h3>Momentum Log</h3>
-            </div>
-          </div>
-          <ul class="log-list" id="logList"></ul>
-        </article>
-      </section>
+      <div id="toastStack" class="toast-stack" aria-live="polite"></div>
     </main>
 
     <script src="app.js"></script>
