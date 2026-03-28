@@ -13,6 +13,12 @@ export const currentUser = {
     { role: 'Junior Crumb Analyst', company: 'ParkBench Ventures', duration: '2022 - 2024', description: 'Identified and catalogued breadcrumb opportunities across 14 park benches. Increased personal crumb intake by 340%.' },
   ],
   skills: ['Breadcrumb Acquisition', 'Aggressive Eye Contact', 'Head Bobbing', 'Cooing (Professional)', 'Sidewalk Navigation', 'Statue Assessment', 'Trash Can Diving', 'Intimidation Tactics', 'Wing Flapping', 'Urban Foraging'],
+  emoji: '🐦‍⬛',
+  premium: false,
+  verified: false,
+  openToWork: true,
+  status: 'Currently standing on: Nathan Phillips Square statue',
+  badges: ['500+ Hours Bench Sitting', '1000 Crumbs Consumed', 'Survived 3 Hawk Encounters', 'First Poop on a Lamborghini', 'Attended PigeonIn Local'],
 };
 
 export const pigeons = [
@@ -32,6 +38,11 @@ export const pigeons = [
       { role: 'Senior Peck Strategist', company: 'PeckCorp', duration: '2020 - 2023', description: 'Developed proprietary pecking algorithms that reduced time-to-crumb by 60%.' },
     ],
     skills: ['Breadcrumb Acquisition', 'Strategic Cooing', 'Team Flocking', 'C-Suite Perching', 'Synergy Maximization'],
+    emoji: '🕊️',
+    premium: true,
+    verified: true,
+    openToWork: false,
+    status: 'Currently standing on: Union Station departures board',
   },
   {
     id: '2',
@@ -49,6 +60,11 @@ export const pigeons = [
       { role: 'Junior Windshield Analyst', company: 'SplatTech', duration: '2020 - 2022', description: 'Conducted precision windshield assessments on parked vehicles. Employee of the month x14.' },
     ],
     skills: ['Statue Defacement', 'Precision Landing', 'Quality Assurance', 'Windshield Analysis', 'Coverage Optimization'],
+    emoji: '🐦',
+    premium: false,
+    verified: false,
+    openToWork: false,
+    status: 'Currently standing on: Sir John A. Macdonald statue (third shift today)',
   },
   {
     id: '3',
@@ -66,6 +82,11 @@ export const pigeons = [
       { role: 'Founder & CEO', company: 'WingSpan Capital', duration: '2019 - 2021', description: 'Raised 50,000 breadcrumbs in seed funding. Pivoted 7 times. Exited via acquisition (eaten by a hawk).' },
     ],
     skills: ['Entrepreneurship', 'Public Cooing', 'Venture Capital', 'Disruption', 'Thought Leadership', 'Pivoting'],
+    emoji: '🦅',
+    premium: true,
+    verified: true,
+    openToWork: false,
+    status: 'Currently standing on: His own ego',
   },
   {
     id: '4',
@@ -83,6 +104,11 @@ export const pigeons = [
       { role: 'Territorial Analyst', company: 'NestWorks', duration: '2020 - 2022', description: 'Mapped optimal roosting positions across downtown Toronto using proprietary head-bobbing algorithms.' },
     ],
     skills: ['Territory Management', 'Rooftop Assessment', 'Conflict Resolution (vs Seagulls)', 'Urban Planning', 'Advocacy'],
+    emoji: '🐧',
+    premium: false,
+    verified: false,
+    openToWork: false,
+    status: 'Currently standing on: The southeast corner of King & Bay. You know the one.',
   },
   {
     id: '5',
@@ -100,6 +126,11 @@ export const pigeons = [
       { role: 'Staring Intern', company: 'IntimidateInc.', duration: '2022 - 2023', description: 'Completed 1,000+ hours of unblinking eye contact training.' },
     ],
     skills: ['Sidewalk Blocking', 'Aggressive Eye Contact', 'Intimidation', 'Not Moving', 'Staring'],
+    emoji: '🐤',
+    premium: false,
+    verified: false,
+    openToWork: true,
+    status: 'Currently standing on: Your patience',
   },
   {
     id: '6',
@@ -116,6 +147,11 @@ export const pigeons = [
       { role: 'Senior Data Scientist', company: 'CrumbMetrics', duration: '2022 - Present', description: 'Built ML models for real-time breadcrumb trajectory prediction. Reduced false-positive crumb rate by 45%.' },
     ],
     skills: ['Machine Learning', 'Crumb Prediction', 'Python (the language, not the snake)', 'Data Pecking', 'Neural Nest-works'],
+    emoji: '🦆',
+    premium: false,
+    verified: false,
+    openToWork: false,
+    status: 'Currently standing on: A mountain of data (and a park bench)',
   },
   {
     id: '7',
@@ -132,6 +168,11 @@ export const pigeons = [
       { role: 'HR Director', company: 'FlockForce', duration: '2019 - Present', description: 'Grew the flock from 12 to 200+ pigeons while maintaining a 4.8/5 roost satisfaction score.' },
     ],
     skills: ['Flock Management', 'Diversity & Inclusion', 'Conflict Resolution', 'Roost Culture', 'Cooing Communications'],
+    emoji: '🐔',
+    premium: false,
+    verified: true,
+    openToWork: false,
+    status: 'Currently standing on: The moral high ground',
   },
   {
     id: '8',
@@ -148,6 +189,11 @@ export const pigeons = [
       { role: 'CEO & Founder', company: 'Coo-Fit Athletics', duration: '2023 - Present', description: 'Building the #1 fitness brand for pigeons. 10K followers on PigeonTok.' },
     ],
     skills: ['Flying', 'Wing Day', 'Personal Branding', 'Content Creation', 'Protein Crumb Optimization'],
+    emoji: '🦜',
+    premium: false,
+    verified: false,
+    openToWork: false,
+    status: 'Currently flying: Lap 147 around CN Tower',
   },
 ];
 

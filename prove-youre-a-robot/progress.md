@@ -11,4 +11,10 @@ Original prompt: Please do the prove you're a robot one (do it in its own folder
   - webcam stillness scan with fallback idle mode
   - binary question audit
   - final downloadable certificate
-- Remaining work after initial scaffold: run local verification, fix any UI/logic issues, and polish demo rough edges.
+- Verification and polish fixes completed:
+  - boot overlay CTA now remains visible at 1280x720 instead of falling below the fold
+  - binary stage now locks after completion so extra clicks cannot mutate the result
+  - freeze stage now waits for live camera frames and falls back cleanly instead of risking drawImage crashes
+  - freeze calibration messaging is explicit instead of silently eating stillness time
+  - line and timing trials were relaxed slightly to be less demo-fragile
+  - `setPointerCapture` is now tolerant of synthetic test events used during browser verification
