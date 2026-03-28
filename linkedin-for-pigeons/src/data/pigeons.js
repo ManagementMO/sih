@@ -1,5 +1,6 @@
 export const currentUser = {
   id: 'me',
+  color: '#667eea',
   name: 'You (A Pigeon)',
   headline: 'Aspiring Breadcrumb Influencer | Open to Worm',
   location: 'Trinity Bellwoods Park, Toronto, ON',

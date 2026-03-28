@@ -11,7 +11,6 @@ import {
   Sparkles,
   Bell,
   BellOff,
-  SlidersHorizontal,
   X,
   Briefcase,
   Building2,

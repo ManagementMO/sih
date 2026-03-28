@@ -10,7 +10,7 @@ export default function Feed() {
   const suggestedPigeons = pigeons.slice(0, 3);
 
   return (
-    <div className="max-w-[1128px] mx-auto px-4 py-6">
+    <div className="py-6">
       <div className="flex gap-6 justify-center">
         {/* ─── LEFT SIDEBAR ─── */}
         <aside className="w-56 shrink-0 hidden lg:block">
