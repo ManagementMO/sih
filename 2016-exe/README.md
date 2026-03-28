@@ -31,3 +31,9 @@ http://localhost:4180
 3. Hit `DISRUPT TASK`.
 4. Smash `ADD AI`, `MAKE IT B2B`, and `RAISE $12M SEED`.
 5. Read the LinkedIn post out loud like you mean it.
+
+## Notes
+
+- Sound arms on first click to satisfy browser autoplay rules.
+- `COPY PITCH` and `COPY POST` both include clipboard fallbacks.
+- The whole project is static HTML, CSS, and JS with no build step.
