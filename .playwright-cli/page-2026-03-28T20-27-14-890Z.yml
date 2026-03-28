@@ -1,0 +1,124 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - paragraph [ref=e4]: Machine Citizenship Bureau // Human Deterrence Division
+      - heading "PROVE YOU'RE A ROBOT" [level=1] [ref=e5]
+      - paragraph [ref=e6]: A reverse CAPTCHA for entities with flawless timing, zero feelings, and a clinically straight cursor.
+      - generic [ref=e7]:
+        - button "Initiate Verification" [ref=e8] [cursor=pointer]
+        - paragraph [ref=e9]: Best experienced on localhost with a webcam. Human excuses will be logged.
+    - generic [ref=e10]:
+      - generic [ref=e11]:
+        - generic [ref=e12]: TRIALS
+        - strong [ref=e13]: "04"
+      - generic [ref=e14]:
+        - generic [ref=e15]: TARGET
+        - strong [ref=e16]: Machine-grade compliance
+      - generic [ref=e17]:
+        - generic [ref=e18]: DISQUALIFYING TRAITS
+        - strong [ref=e19]: Creativity, warmth, jazz timing
+  - main [ref=e20]:
+    - generic [ref=e21]:
+      - generic [ref=e22]:
+        - paragraph [ref=e23]: Session 17-B
+        - heading "Proof of Roboticity" [level=2] [ref=e24]
+      - generic [ref=e25]:
+        - generic [ref=e26]:
+          - generic [ref=e27]: Human suspicion
+          - generic "Human suspicion meter" [ref=e28]
+          - strong [ref=e30]: 84%
+        - generic [ref=e31]:
+          - generic [ref=e32]: Boot runtime
+          - strong [ref=e33]: 00:00
+    - generic [ref=e34]:
+      - generic [ref=e35]:
+        - generic [ref=e36]:
+          - generic [ref=e37]:
+            - paragraph [ref=e38]: Trial 01
+            - heading "Straight-Line Compliance" [level=3] [ref=e39]
+          - generic [ref=e40]:
+            - generic [ref=e41]: Awaiting verification
+            - button "Reset trial" [ref=e42] [cursor=pointer]
+        - paragraph [ref=e44]: Drag from ORIGIN to DESTINATION in one insultingly straight motion. Wobble implies imagination.
+        - generic [ref=e45]:
+          - generic [ref=e47]:
+            - generic "Straight line test surface" [ref=e48]:
+              - generic [ref=e51]: ORIGIN
+              - generic [ref=e53]: DESTINATION
+            - generic [ref=e55]:
+              - generic [ref=e56]: Press on ORIGIN and drag to DESTINATION.
+              - strong [ref=e57]: "Deviation: --"
+          - generic:
+            - generic:
+              - generic:
+                - button "SYNC"
+              - generic:
+                - paragraph: Tap the node 4 times on the pulse. Swing rhythm is treason.
+                - generic:
+                  - strong: "Avg error: --"
+                  - strong: "Variance: --"
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - generic: Surveillance offline
+                  - strong: Stable for 0.0 / 3.2s
+              - generic:
+                - generic:
+                  - button "Enable surveillance"
+                  - button "Commence stillness audit" [disabled]
+                - paragraph: Webcam preferred. If access fails, the bureau will infer stillness through total input silence.
+                - strong: "Motion noise: --"
+          - generic:
+            - generic:
+              - generic:
+                - paragraph: Emotional checksum
+                - strong: Question 1 / 5
+              - heading "Would you pause a software update because someone is \"using the laptop\"?" [level=4]
+              - paragraph: 0 = continue the update anyway. 1 = delay for sentimental reasons.
+              - generic:
+                - button "0"
+                - button "1"
+              - strong: "Machine affinity: --"
+        - generic [ref=e58]:
+          - paragraph [ref=e59]: System idle. Your warmth level is currently unverified.
+          - button "Advance to next audit" [disabled] [ref=e60]
+      - complementary [ref=e61]:
+        - generic [ref=e62]:
+          - paragraph [ref=e63]: Audit ladder
+          - generic [ref=e64]:
+            - generic [ref=e65]:
+              - generic [ref=e66]: "01"
+              - strong [ref=e67]: Straight line
+              - emphasis [ref=e68]: Pending
+            - generic [ref=e69]:
+              - generic [ref=e70]: "02"
+              - strong [ref=e71]: Clock obedience
+              - emphasis [ref=e72]: Pending
+            - generic [ref=e73]:
+              - generic [ref=e74]: "03"
+              - strong [ref=e75]: Stillness scan
+              - emphasis [ref=e76]: Pending
+            - generic [ref=e77]:
+              - generic [ref=e78]: "04"
+              - strong [ref=e79]: Binary personality
+              - emphasis [ref=e80]: Pending
+        - generic [ref=e81]:
+          - paragraph [ref=e82]: Telemetry
+          - generic [ref=e83]:
+            - generic [ref=e84]:
+              - term [ref=e85]: Cursor deviation
+              - definition [ref=e86]: "--"
+            - generic [ref=e87]:
+              - term [ref=e88]: Clock obedience
+              - definition [ref=e89]: "--"
+            - generic [ref=e90]:
+              - term [ref=e91]: Motion noise
+              - definition [ref=e92]: "--"
+            - generic [ref=e93]:
+              - term [ref=e94]: Binary affinity
+              - definition [ref=e95]: "--"
+        - generic [ref=e96]:
+          - paragraph [ref=e97]: Incident log
+          - list [ref=e98]:
+            - listitem [ref=e99]: System idle. Awaiting a suspiciously competent robot.

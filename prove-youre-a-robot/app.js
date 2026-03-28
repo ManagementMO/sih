@@ -506,14 +506,14 @@ function setBinaryButtonsDisabled(disabled) {
 
 function resetTimingTrial() {
   state.timing.live = true;
-  state.timing.startedAt = now();
+  state.timing.startedAt = now() + state.timing.beatMs;
   state.timing.clickTimes = [];
   state.timing.clickErrors = [];
   state.timing.lastPulseIndex = -1;
   refs.pulseOrbit.classList.add("is-live");
   refs.pulseOrbit.style.background =
     "conic-gradient(from -90deg, var(--accent) 0deg, rgba(213, 255, 63, 0.12) 0deg 360deg), radial-gradient(circle at center, rgba(213, 255, 63, 0.1), transparent 58%)";
-  refs.timingHint.textContent = "Pulse live. Hit four bright beats. Swing rhythm is treason.";
+  refs.timingHint.textContent = "Pulse calibrating. First bright beat lands in 1 second.";
   refs.timingAverage.textContent = "Avg error: --";
   refs.timingVariance.textContent = "Variance: --";
   renderTapStrip([]);
@@ -1035,11 +1035,11 @@ function tick(timestamp = now()) {
 
   if (currentStageKey() === "timing") {
     const elapsed = timestamp - state.timing.startedAt;
-    const phase = clamp((((elapsed % state.timing.beatMs) + state.timing.beatMs) % state.timing.beatMs) / state.timing.beatMs, 0, 1);
-    const arc = Math.max(12, phase * 360);
+    const phase = elapsed < 0 ? 0 : clamp((((elapsed % state.timing.beatMs) + state.timing.beatMs) % state.timing.beatMs) / state.timing.beatMs, 0, 1);
+    const arc = elapsed < 0 ? 12 : Math.max(12, phase * 360);
     refs.pulseOrbit.style.background = `conic-gradient(from -90deg, var(--accent) 0deg ${arc}deg, rgba(213, 255, 63, 0.12) ${arc}deg 360deg), radial-gradient(circle at center, rgba(213, 255, 63, 0.1), transparent 58%)`;
-    const pulseIndex = Math.floor(elapsed / state.timing.beatMs);
-    if (state.timing.live && pulseIndex !== state.timing.lastPulseIndex) {
+    const pulseIndex = elapsed < 0 ? -1 : Math.floor(elapsed / state.timing.beatMs);
+    if (state.timing.live && pulseIndex >= 0 && pulseIndex !== state.timing.lastPulseIndex) {
       state.timing.lastPulseIndex = pulseIndex;
       playTone(520, 0.03, "sine", 0.012);
     }
@@ -1174,6 +1174,10 @@ refs.timingButton.addEventListener("click", () => {
   if (currentStageKey() !== "timing") return;
   if (!state.timing.live) return;
   const timestamp = now();
+  if (timestamp < state.timing.startedAt) {
+    refs.timingHint.textContent = "Too early. Wait for the first full bright beat.";
+    return;
+  }
   state.lastInputAt = timestamp;
   playTone(720, 0.05, "square", 0.016);
   const elapsed = timestamp - state.timing.startedAt;
