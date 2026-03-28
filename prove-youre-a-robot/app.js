@@ -1137,7 +1137,11 @@ refs.lineField.addEventListener("pointerdown", (event) => {
   state.line.pointerId = event.pointerId;
   state.line.points = [point];
   refs.lineField.classList.add("is-armed");
-  refs.lineField.setPointerCapture(event.pointerId);
+  try {
+    refs.lineField.setPointerCapture(event.pointerId);
+  } catch (error) {
+    // Synthetic test events may not carry a capturable pointer id.
+  }
   refs.lineHint.textContent = "Trajectory armed. Continue toward DESTINATION.";
   refs.stageChip.textContent = "Cursor under suspicion";
   drawLineCanvas();

@@ -1,0 +1,14 @@
+Total messages: 1 (Errors: 1, Warnings: 0)
+
+NotFoundError: Element.setPointerCapture: Invalid pointer id
+    at  (http://127.0.0.1:4173/app.js:1140:18)
+    at fire (debugger eval code line 301 > eval:1:404)
+    at  (debugger eval code line 301 > eval:1:506)
+    at  (debugger eval code line 301 > eval:1:711)
+    at evaluate (debugger eval code:301:30)
+    at  (debugger eval code:1:44)
+    at evaluateFunction (chrome://juggler/content/content/Runtime.js:404:60)
+    at callFunction (chrome://juggler/content/content/Runtime.js:103:41)
+    at _onMessageInternal (chrome://juggler/content/SimpleChannel.js:237:37)
+    at _onMessage (chrome://juggler/content/SimpleChannel.js:194:12)
+    at bindToActor/actor.receiveMessage (chrome://juggler/content/SimpleChannel.js:39:44)
