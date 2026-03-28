@@ -18,3 +18,5 @@ Original prompt: Please do the prove you're a robot one (do it in its own folder
   - freeze calibration messaging is explicit instead of silently eating stillness time
   - line and timing trials were relaxed slightly to be less demo-fragile
   - `setPointerCapture` is now tolerant of synthetic test events used during browser verification
+  - timing stage now starts on a clear first beat after entry instead of arming itself on the first click
+  - timing stage verification rerun: line -> timing -> freeze fallback -> binary -> certificate all passed with zero browser console errors

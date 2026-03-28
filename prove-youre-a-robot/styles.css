@@ -770,6 +770,36 @@ textarea {
   align-items: center;
 }
 
+.ladder-row {
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+
+.ladder-row:hover,
+.ladder-row:focus-visible {
+  border-color: rgba(213, 255, 63, 0.35);
+  background: rgba(213, 255, 63, 0.08);
+  transform: translateX(0.2rem);
+  outline: none;
+}
+
+.ladder-row.is-current {
+  border-color: rgba(213, 255, 63, 0.55);
+  background:
+    linear-gradient(90deg, rgba(213, 255, 63, 0.16), rgba(213, 255, 63, 0.04)),
+    rgba(255, 255, 255, 0.02);
+  box-shadow: inset 0 0 0 1px rgba(213, 255, 63, 0.1);
+}
+
 .ladder-row span {
   color: var(--muted);
 }
