@@ -30,7 +30,7 @@ export const notifications = [
     id: 4,
     type: 'search',
     actor: null,
-    actorColor: '#666',
+    actorColor: '#666666',
     text: 'You appeared in <strong>47 searches</strong> this week, including: "pigeon near me", "bird that won\'t leave", and "why is it staring at me"',
     time: '3h ago',
     read: true,

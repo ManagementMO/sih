@@ -30,13 +30,6 @@ function Messaging() {
     setMessageText('');
   };
 
-  const getInitials = (name) => {
-    const parts = (name || '').split(' ').filter(Boolean);
-    return parts.length >= 2
-      ? parts[0][0] + parts[parts.length - 1][0]
-      : (parts[0] || 'P')[0];
-  };
-
   return (
     <div className="bg-li-card rounded-lg border border-li-border overflow-hidden flex"
          style={{ height: 'calc(100vh - 68px)' }}>
