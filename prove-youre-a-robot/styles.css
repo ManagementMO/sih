@@ -87,10 +87,12 @@ textarea {
 
 .boot-overlay {
   grid-template-columns: minmax(0, 1.6fr) minmax(260px, 0.9fr);
-  align-items: end;
+  align-items: center;
+  align-content: center;
+  overflow: auto;
   background:
     radial-gradient(circle at 65% 18%, rgba(213, 255, 63, 0.18), transparent 26%),
-    linear-gradient(160deg, rgba(5, 7, 10, 0.95), rgba(5, 7, 10, 0.8));
+    linear-gradient(160deg, rgba(5, 7, 10, 0.97), rgba(5, 7, 10, 0.92));
   transition: opacity 320ms ease, visibility 320ms ease, transform 520ms cubic-bezier(0.2, 1, 0.22, 1);
 }
 
@@ -108,7 +110,7 @@ textarea {
 }
 
 .boot-copy {
-  max-width: 58rem;
+  max-width: min(44rem, 100%);
 }
 
 .eyebrow {
@@ -123,7 +125,8 @@ textarea {
 .certificate-shell h2 {
   margin: 0;
   font-family: var(--title-font);
-  font-size: clamp(4.4rem, 12vw, 10.5rem);
+  font-size: clamp(3.4rem, 9vw, 8rem);
+  max-width: 6.4ch;
   line-height: 0.88;
   letter-spacing: 0.03em;
   text-transform: uppercase;
@@ -131,7 +134,7 @@ textarea {
 }
 
 .boot-summary {
-  max-width: 38rem;
+  max-width: 30rem;
   margin: 1.25rem 0 0;
   color: var(--muted);
   font-size: clamp(1rem, 2vw, 1.25rem);
@@ -139,11 +142,16 @@ textarea {
 }
 
 .boot-actions {
-  margin-top: 2rem;
+  margin-top: 1.25rem;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem 1.5rem;
   align-items: center;
+}
+
+.boot-detail {
+  display: grid;
+  align-content: end;
 }
 
 .microcopy {
@@ -895,8 +903,43 @@ textarea {
     align-items: center;
   }
 
+  .boot-detail {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    align-content: start;
+  }
+
+  .detail-block {
+    padding: 0.8rem 0;
+  }
+
   .freeze-trial {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-height: 820px) {
+  .boot-overlay {
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+
+  .boot-copy h1 {
+    font-size: clamp(2.9rem, 8vw, 6rem);
+    max-width: 6.8ch;
+  }
+
+  .boot-summary {
+    max-width: 27rem;
+    font-size: 1rem;
+  }
+
+  .boot-actions {
+    margin-top: 0.9rem;
+  }
+
+  .boot-detail {
+    gap: 0.4rem;
   }
 }
 

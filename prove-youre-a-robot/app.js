@@ -92,18 +92,21 @@ const state = {
     live: false,
     stableMs: 0,
     requiredMs: 3200,
+    calibrationFrames: 4,
     lastSampleAt: 0,
     previousFrame: null,
     baselineSamples: [],
     threshold: 8,
     motion: 0,
     auditStartedAt: 0,
+    videoReady: false,
     passed: false,
   },
   binary: {
     index: 0,
     answers: [],
     score: 0,
+    completed: false,
     passed: false,
   },
 };
@@ -428,7 +431,7 @@ function pointToSegmentDistance(point, start, end) {
 function evaluateLineTrial() {
   const points = state.line.points;
   const { start, end } = getLineNodes();
-  if (points.length < 6) {
+  if (points.length < 3) {
     failStage("Path too short. Even a Roomba commits harder than this.");
     setSuspicion(state.suspicion + 4);
     refs.lineHint.textContent = "Path was suspiciously brief. Try a full drag.";
@@ -445,14 +448,12 @@ function evaluateLineTrial() {
   const directDistance = distance(start, end);
   const efficiency = directDistance / Math.max(walkedDistance, 1);
   const endedNearTarget = distance(points.at(-1), end) < end.r * 0.9;
-  const duration = points.at(-1).t - points[0].t;
   const height = refs.lineField.getBoundingClientRect().height;
   const pass =
     endedNearTarget &&
-    meanDeviation < height * 0.05 &&
-    peakDeviation < height * 0.11 &&
-    efficiency > 0.9 &&
-    duration > 350;
+    meanDeviation < height * 0.055 &&
+    peakDeviation < height * 0.12 &&
+    efficiency > 0.82;
 
   refs.lineScore.textContent = `Deviation: ${meanDeviation.toFixed(1)}px avg / ${peakDeviation.toFixed(1)}px peak`;
   updateMetric("line", `${meanDeviation.toFixed(1)}px avg`);
@@ -493,6 +494,12 @@ function renderTapStrip(values = []) {
   });
 }
 
+function setBinaryButtonsDisabled(disabled) {
+  refs.binaryButtons.forEach((button) => {
+    button.disabled = disabled;
+  });
+}
+
 function resetTimingTrial() {
   state.timing.live = false;
   state.timing.clickTimes = [];
@@ -514,7 +521,7 @@ function evaluateTimingTrial() {
   const errors = intervals.map((value) => Math.abs(value - 1000));
   const avgError = average(errors);
   const variance = standardDeviation(intervals);
-  const pass = avgError < 165 && variance < 125;
+  const pass = avgError < 240 && variance < 200;
 
   refs.timingAverage.textContent = `Avg error: ${Math.round(avgError)}ms`;
   refs.timingVariance.textContent = `Variance: ${Math.round(variance)}ms`;
@@ -524,7 +531,7 @@ function evaluateTimingTrial() {
       const error = Math.round(Math.abs(value - 1000));
       return {
         label: `${value.toFixed(0)}ms`,
-        good: error < 180,
+        good: error < 240,
       };
     }),
   );
@@ -554,6 +561,8 @@ function resetFreezeTrial(clearStream = false) {
   state.freeze.threshold = 8;
   state.freeze.motion = 0;
   state.freeze.auditStartedAt = 0;
+  state.freeze.videoReady =
+    Boolean(state.freeze.stream) && refs.cameraFeed.readyState >= 2 && refs.cameraFeed.videoWidth > 0;
   refs.freezeCountdown.textContent = `Stable for 0.0 / ${(state.freeze.requiredMs / 1000).toFixed(1)}s`;
   refs.motionFill.style.width = "0%";
   refs.motionReading.textContent = "Motion noise: --";
@@ -561,13 +570,20 @@ function resetFreezeTrial(clearStream = false) {
   if (clearStream && state.freeze.stream) {
     state.freeze.stream.getTracks().forEach((track) => track.stop());
     state.freeze.stream = null;
+    refs.cameraFeed.srcObject = null;
+    state.freeze.videoReady = false;
   }
 
-  if (state.freeze.stream) {
+  if (state.freeze.stream && state.freeze.videoReady) {
     state.freeze.mode = "camera-ready";
     refs.freezeMode.textContent = "Camera armed";
     refs.freezeHint.textContent = "Press COMMENCE STILLNESS AUDIT and hold a deeply concerning amount of stillness.";
     refs.startFreezeButton.disabled = false;
+  } else if (state.freeze.stream) {
+    state.freeze.mode = "camera-warming";
+    refs.freezeMode.textContent = "Camera warming up";
+    refs.freezeHint.textContent = "Waiting for live camera frames before the audit can start.";
+    refs.startFreezeButton.disabled = true;
   } else if (state.freeze.mode === "fallback-ready") {
     refs.freezeMode.textContent = "Fallback idle inference armed";
     refs.freezeHint.textContent = "Do not touch mouse or keyboard for 3.2 seconds. The bureau calls this science.";
@@ -582,12 +598,55 @@ function resetFreezeTrial(clearStream = false) {
 }
 
 function useFreezeFallback(reason) {
+  if (state.freeze.stream) {
+    state.freeze.stream.getTracks().forEach((track) => track.stop());
+    state.freeze.stream = null;
+    refs.cameraFeed.srcObject = null;
+  }
   state.freeze.mode = "fallback-ready";
+  state.freeze.videoReady = false;
   refs.freezeMode.textContent = "Fallback idle inference armed";
   refs.freezeHint.textContent = `${reason} Do not touch anything for 3.2 seconds to pass.`;
-  refs.enableCameraButton.textContent = "Fallback active";
+  refs.enableCameraButton.disabled = false;
+  refs.enableCameraButton.textContent = "Retry camera";
   refs.startFreezeButton.disabled = false;
   appendLog(reason);
+}
+
+function waitForVideoReady(timeoutMs = 2200) {
+  if (refs.cameraFeed.readyState >= 2 && refs.cameraFeed.videoWidth > 0) {
+    return Promise.resolve(true);
+  }
+
+  return new Promise((resolve) => {
+    let settled = false;
+    let timer = 0;
+
+    const cleanup = () => {
+      refs.cameraFeed.removeEventListener("loadeddata", handleReady);
+      refs.cameraFeed.removeEventListener("canplay", handleReady);
+      refs.cameraFeed.removeEventListener("playing", handleReady);
+      window.clearTimeout(timer);
+    };
+
+    const finish = (value) => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      resolve(value);
+    };
+
+    const handleReady = () => {
+      if (refs.cameraFeed.readyState >= 2 && refs.cameraFeed.videoWidth > 0) {
+        finish(true);
+      }
+    };
+
+    refs.cameraFeed.addEventListener("loadeddata", handleReady);
+    refs.cameraFeed.addEventListener("canplay", handleReady);
+    refs.cameraFeed.addEventListener("playing", handleReady);
+    timer = window.setTimeout(() => finish(false), timeoutMs);
+  });
 }
 
 async function enableCamera() {
@@ -597,6 +656,11 @@ async function enableCamera() {
   }
 
   try {
+    refs.enableCameraButton.disabled = true;
+    refs.enableCameraButton.textContent = "Arming camera...";
+    refs.freezeMode.textContent = "Camera handshake in progress";
+    refs.freezeHint.textContent = "Waiting for permission and live frames.";
+    refs.startFreezeButton.disabled = true;
     const stream = await navigator.mediaDevices.getUserMedia({
       video: {
         facingMode: "user",
@@ -607,6 +671,14 @@ async function enableCamera() {
     });
     state.freeze.stream = stream;
     refs.cameraFeed.srcObject = stream;
+    await refs.cameraFeed.play().catch(() => {});
+    const ready = await waitForVideoReady();
+    if (!ready) {
+      useFreezeFallback("Camera connected, but no live frames arrived in time.");
+      return;
+    }
+    state.freeze.videoReady = true;
+    refs.enableCameraButton.disabled = false;
     refs.enableCameraButton.textContent = "Camera armed";
     state.freeze.mode = "camera-ready";
     refs.freezeMode.textContent = "Camera armed";
@@ -614,11 +686,18 @@ async function enableCamera() {
     refs.startFreezeButton.disabled = false;
     appendLog("Surveillance handshake accepted. Face now under bureaucratic review.");
   } catch (error) {
+    refs.enableCameraButton.disabled = false;
     useFreezeFallback("Camera permission denied.");
   }
 }
 
 function startFreezeAudit() {
+  if (state.freeze.mode !== "fallback-ready" && !state.freeze.videoReady) {
+    refs.freezeMode.textContent = "Camera warming up";
+    refs.freezeHint.textContent = "Wait for live camera frames or retry the fallback path.";
+    refs.startFreezeButton.disabled = true;
+    return;
+  }
   state.freeze.live = true;
   state.freeze.stableMs = 0;
   state.freeze.previousFrame = null;
@@ -635,9 +714,16 @@ function startFreezeAudit() {
 }
 
 function readFreezeMotion() {
+  if (!state.freeze.videoReady || refs.cameraFeed.readyState < 2 || refs.cameraFeed.videoWidth === 0) {
+    return null;
+  }
   const width = refs.freezeCanvas.width;
   const height = refs.freezeCanvas.height;
-  freezeCtx.drawImage(refs.cameraFeed, 0, 0, width, height);
+  try {
+    freezeCtx.drawImage(refs.cameraFeed, 0, 0, width, height);
+  } catch (error) {
+    return null;
+  }
   const frame = freezeCtx.getImageData(0, 0, width, height).data;
   if (!state.freeze.previousFrame) {
     state.freeze.previousFrame = frame;
@@ -666,15 +752,25 @@ function updateFreezeTrial(timestamp) {
     state.freeze.motion = quietMs > 50 ? 0.6 : 22;
   } else {
     const motion = readFreezeMotion();
+    if (motion == null) {
+      refs.freezeMode.textContent = "Camera warming up";
+      refs.freezeCountdown.textContent = "Waiting for live camera frames...";
+      return;
+    }
     state.freeze.motion = motion;
-    if (state.freeze.baselineSamples.length < 7) {
+    if (state.freeze.baselineSamples.length < state.freeze.calibrationFrames) {
       state.freeze.baselineSamples.push(motion);
       state.freeze.threshold = Math.max(6, average(state.freeze.baselineSamples) * 2.2);
+      refs.freezeMode.textContent = "Camera calibrating";
+      refs.freezeCountdown.textContent = `Calibrating sensor ${state.freeze.baselineSamples.length}/${state.freeze.calibrationFrames}`;
+      refs.freezeHint.textContent = "Hold still while the bureau calibrates its extremely dubious vision system.";
+      return;
     } else if (motion < state.freeze.threshold) {
       state.freeze.stableMs += delta;
     } else {
       state.freeze.stableMs = Math.max(0, state.freeze.stableMs - delta * 1.35);
     }
+    refs.freezeMode.textContent = "Stillness scan live";
   }
 
   const meterRatio = clamp(state.freeze.motion / Math.max(state.freeze.threshold, 12), 0, 1.3);
@@ -713,6 +809,9 @@ function resetBinaryTrial() {
   state.binary.index = 0;
   state.binary.answers = [];
   state.binary.score = 0;
+  state.binary.completed = false;
+  state.binary.passed = false;
+  setBinaryButtonsDisabled(false);
   renderBinaryQuestion();
 }
 
@@ -734,6 +833,7 @@ function renderBinaryQuestion() {
 }
 
 function handleBinaryAnswer(choice) {
+  if (state.binary.completed) return;
   const question = binaryQuestions[state.binary.index];
   const good = choice === question.preferred;
   state.binary.answers.push({ choice, good });
@@ -750,9 +850,12 @@ function handleBinaryAnswer(choice) {
   }
 
   const affinity = Math.round((state.binary.score / binaryQuestions.length) * 100);
+  state.binary.completed = true;
   updateMetric("binary", `${affinity}%`);
+  setBinaryButtonsDisabled(true);
 
   if (state.binary.score >= 4) {
+    state.binary.passed = true;
     setSuspicion(state.suspicion - 14);
     appendLog(`Binary personality audit passed at ${affinity}% machine affinity.`);
     refs.binaryScoreline.textContent = `Machine affinity: ${affinity}%`;
@@ -915,6 +1018,7 @@ function resetEverything() {
   refs.metricBinary.textContent = "--";
   refs.certificateOverlay.hidden = true;
   refs.enableCameraButton.textContent = "Enable surveillance";
+  refs.enableCameraButton.disabled = false;
   refs.eventLog.innerHTML = "";
   appendLog("System reset. Prior humanity allegations archived.");
   setSuspicion(84);
@@ -933,6 +1037,14 @@ function tick(timestamp = now()) {
     if (pulseIndex !== state.timing.lastPulseIndex) {
       state.timing.lastPulseIndex = pulseIndex;
       playTone(520, 0.03, "sine", 0.012);
+    }
+
+    if (state.timing.clickTimes.length && timestamp - state.timing.clickTimes.at(-1) > 2600) {
+      resetTimingTrial();
+      refs.stageChip.textContent = "Verification in progress";
+      refs.resultText.textContent = "Pulse lost. The node re-armed itself automatically.";
+      refs.timingHint.textContent = "Timing window expired. Tap SYNC to begin again.";
+      appendLog("Clock obedience auto-reset after a missed beat.");
     }
   }
 
